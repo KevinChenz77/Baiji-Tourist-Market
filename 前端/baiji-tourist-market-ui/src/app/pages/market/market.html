@@ -22,7 +22,7 @@
             <h3>{{ facility.label }}</h3>
             <p>{{ facility.detail }}</p>
             @if (facility.label === '廁所') {
-              <img [src]="toiletPhoto" alt="廁所位置示意圖" class="toilet-photo" />
+              <img [src]="toiletPhoto" alt="廁所位置示意圖" class="toilet-photo" loading="lazy" />
             }
           </div>
         </article>

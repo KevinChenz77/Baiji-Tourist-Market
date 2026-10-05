@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ShopService, shopCategoryLabels } from '../../../shared/shop.service';
+import { setPageMeta } from '../../../shared/seo';
 
 @Component({
   selector: 'app-shop-detail',
@@ -31,7 +32,13 @@ export class ShopDetail {
     const shop = this.shop();
     if (!shop) {
       this.router.navigateByUrl('/shop');
+      return;
     }
+    setPageMeta(
+      `${shop.name}｜三峽白雞觀光商場店家`,
+      `${shop.brief}｜三峽白雞觀光商場`,
+      `shop/detail/${shop.number}`
+    );
   }
 
   protected goBack(): void {

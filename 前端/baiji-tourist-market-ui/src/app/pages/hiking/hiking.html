@@ -7,7 +7,7 @@
   <div class="trail-grid">
     @for (trail of trails; track trail.name) {
       <a class="trail-card" [href]="trail.sourceUrl" target="_blank" rel="noopener">
-        <img [src]="trail.image" alt="" />
+        <img [src]="trail.image" [alt]="trail.name" loading="lazy" />
         <div class="card-body">
           <h3>{{ trail.name }} <mat-icon inline>open_in_new</mat-icon></h3>
           <p>{{ trail.brief }}</p>

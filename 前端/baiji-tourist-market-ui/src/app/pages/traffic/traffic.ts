@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
+import { setPageMeta } from '../../shared/seo';
 
 interface DrivingRoute {
   title: string;
@@ -112,6 +113,14 @@ export class Traffic {
   protected readonly transitOptions = transitOptions;
   protected readonly embedMapUrl: SafeResourceUrl =
     this.sanitizer.bypassSecurityTrustResourceUrl(embedMapUrl);
+
+  constructor() {
+    setPageMeta(
+      '交通方式｜三峽白雞觀光商場',
+      '三峽白雞觀光商場交通指南，提供開車路線、778公車、新巴士F626免費接駁、三鶯線捷運轉乘方式與停車場資訊。',
+      'traffic'
+    );
+  }
 
   protected transitMapUrl(mode: string): string {
     return transitMapUrl(mode);

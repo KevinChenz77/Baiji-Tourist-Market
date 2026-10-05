@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { setPageMeta } from '../../shared/seo';
 
 interface HikingTrail {
   name: string;
@@ -34,4 +35,12 @@ const hikingTrails: HikingTrail[] = [
 })
 export class Hiking {
   protected readonly trails = hikingTrails;
+
+  constructor() {
+    setPageMeta(
+      '登山資訊｜三峽白雞觀光商場',
+      '三峽白雞觀光商場周邊登山步道資訊，包含白雞山登山步道、紫微聖母環山步道的里程、難度與路線介紹。',
+      'hiking'
+    );
+  }
 }

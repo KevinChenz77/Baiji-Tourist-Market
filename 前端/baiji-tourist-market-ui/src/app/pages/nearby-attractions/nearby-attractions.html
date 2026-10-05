@@ -5,7 +5,7 @@
   <div class="attraction-grid">
     @for (attraction of attractions; track attraction.name) {
       <article class="attraction-card">
-        <img [src]="attraction.image" alt="" />
+        <img [src]="attraction.image" [alt]="attraction.name" loading="lazy" />
         <div class="card-body">
           <h3>{{ attraction.name }}</h3>
           <p class="drive-time"><mat-icon inline>directions_car</mat-icon> {{ attraction.driveTime }}</p>

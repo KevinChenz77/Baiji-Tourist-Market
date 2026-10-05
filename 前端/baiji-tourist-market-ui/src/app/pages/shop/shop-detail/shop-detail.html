@@ -13,7 +13,7 @@
 
     <div class="gallery">
       @for (image of shop.images; track image) {
-        <img [src]="image" alt="" />
+        <img [src]="image" [alt]="shop.name + ' 店內照片'" loading="lazy" />
       }
     </div>
 

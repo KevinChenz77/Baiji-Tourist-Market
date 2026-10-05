@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { setPageMeta } from '../../shared/seo';
 
 interface Facility {
   icon: string;
@@ -42,4 +43,12 @@ const facilities: Facility[] = [
 export class Market {
   protected readonly facilities = facilities;
   protected readonly toiletPhoto = 'assets/images/market/toilet-location.jpg';
+
+  constructor() {
+    setPageMeta(
+      '商場介紹｜三峽白雞觀光商場',
+      '三峽白雞觀光商場設施介紹，包含停車場、廁所、遊客服務中心等必要設施資訊。',
+      'market'
+    );
+  }
 }

@@ -7,6 +7,7 @@ import {
   shopCategories,
   shopCategoryLabels,
 } from '../../../shared/shop.service';
+import { setPageMeta } from '../../../shared/seo';
 
 @Component({
   selector: 'app-shop-list',
@@ -35,6 +36,14 @@ export class ShopList {
   protected readonly shops = computed(() =>
     this.shopService.getShuffledByCategory(this.currentCategory())
   );
+
+  constructor() {
+    setPageMeta(
+      '商場店家｜三峽白雞觀光商場',
+      '瀏覽三峽白雞觀光商場內餐飲、小吃、品茶、農特產、命理與服務店家，依分類快速找到你要的店家。',
+      'shop'
+    );
+  }
 
   protected selectCategory(category: ShopCategory): void {
     this.router.navigate([], {

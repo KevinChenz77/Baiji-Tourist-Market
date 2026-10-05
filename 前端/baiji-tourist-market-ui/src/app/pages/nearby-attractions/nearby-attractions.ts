@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { setPageMeta } from '../../shared/seo';
 
 interface NearbyAttraction {
   name: string;
@@ -87,6 +88,14 @@ const nearbyAttractions: NearbyAttraction[] = [
 })
 export class NearbyAttractions {
   protected readonly attractions = nearbyAttractions;
+
+  constructor() {
+    setPageMeta(
+      '周邊三峽景點｜三峽白雞觀光商場',
+      '三峽白雞觀光商場周邊景點推薦，包含三峽老街、清水祖師廟、大板根森林溫泉、鶯歌老街等順遊景點與車程資訊。',
+      'nearby/sanxia-attractions'
+    );
+  }
 
   protected navUrl(attraction: NearbyAttraction): string {
     return `https://www.google.com/maps/dir/?api=1&destination=${attraction.lat},${attraction.lng}`;

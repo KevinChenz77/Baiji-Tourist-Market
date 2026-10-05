@@ -1,5 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, afterNextRender } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { setPageMeta } from '../../shared/seo';
 
 interface NewsItem {
   createdAt: string;
@@ -45,6 +46,11 @@ export class Home {
   protected readonly shopAds = shopAds;
 
   constructor() {
+    setPageMeta(
+      '三峽白雞觀光商場｜行修宮商圈美食、伴手禮、交通資訊',
+      '三峽白雞觀光商場官方網站，提供行修宮周邊店家美食、伴手禮、登山步道、交通停車與周邊景點等旅遊資訊。',
+      ''
+    );
     afterNextRender(async () => {
       const { register } = await import('swiper/element/bundle');
       register();

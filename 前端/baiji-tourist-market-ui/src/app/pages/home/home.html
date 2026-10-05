@@ -47,13 +47,13 @@
         <swiper-slide>
           @if (ad.link) {
             <a class="ad-card" [href]="ad.link" target="_blank" rel="noopener">
-              <img [src]="ad.image" alt="" />
+              <img [src]="ad.image" [alt]="ad.title" loading="lazy" />
               <h3>{{ ad.title }}</h3>
               <p>{{ ad.brief }}</p>
             </a>
           } @else {
             <div class="ad-card not-clickable">
-              <img [src]="ad.image" alt="" />
+              <img [src]="ad.image" [alt]="ad.title" loading="lazy" />
               <h3>{{ ad.title }}</h3>
               <p>{{ ad.brief }}</p>
             </div>
