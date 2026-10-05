@@ -17,23 +17,18 @@
     </button>
 
     <nav class="main-nav" [class.open]="mobileMenuOpen()">
+      <a class="market-cta" href="https://www.ht.org.tw/" target="_blank" rel="noopener">
+        行修宮官網 <mat-icon inline>open_in_new</mat-icon>
+      </a>
       <a routerLink="/traffic" routerLinkActive="active" (click)="closeMobileMenu()">交通方式</a>
       <a routerLink="/shop" routerLinkActive="active" (click)="closeMobileMenu()">商場店家</a>
 
-      <button class="nav-dropdown-trigger" mat-button [matMenuTriggerFor]="nearbyMenu">
-        周邊景點 <mat-icon iconPositionEnd>expand_more</mat-icon>
-      </button>
-      <mat-menu #nearbyMenu="matMenu">
-        <a mat-menu-item href="https://www.ht.org.tw/" target="_blank" rel="noopener">
-          行脩宮 <mat-icon inline>open_in_new</mat-icon>
-        </a>
-        <a mat-menu-item routerLink="/nearby/sanxia-attractions" (click)="closeMobileMenu()">
-          周邊三峽景點
-        </a>
-      </mat-menu>
+      <a routerLink="/nearby/sanxia-attractions" routerLinkActive="active" (click)="closeMobileMenu()">
+        周邊景點
+      </a>
 
       <a routerLink="/hiking" routerLinkActive="active" (click)="closeMobileMenu()">登山資訊</a>
-      <a class="market-cta" routerLink="/market" routerLinkActive="active" (click)="closeMobileMenu()">
+      <a routerLink="/market" routerLinkActive="active" (click)="closeMobileMenu()">
         商場介紹
       </a>
     </nav>

@@ -3,6 +3,19 @@ import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/route
 import { of } from 'rxjs';
 import { ShopDetail } from './shop-detail';
 
+// jsdom 未實作 Element.part（CSS Shadow Parts），swiper 自訂元素初始化時會呼叫 part.add() 而噴錯，故補上最小 polyfill。
+if (!('part' in Element.prototype)) {
+  Object.defineProperty(Element.prototype, 'part', {
+    configurable: true,
+    get(this: Element & { _part?: Set<string> }) {
+      if (!this._part) {
+        this._part = new Set<string>();
+      }
+      return this._part;
+    },
+  });
+}
+
 describe('ShopDetail', () => {
   let component: ShopDetail;
   let fixture: ComponentFixture<ShopDetail>;

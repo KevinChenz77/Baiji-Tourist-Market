@@ -4,6 +4,22 @@
       <mat-icon inline>arrow_back</mat-icon> 返回商場店家列表
     </button>
 
+    <section class="carousel">
+      <swiper-container
+        loop="true"
+        pagination="true"
+        navigation="true"
+      >
+        @for (image of shop.images; track image + $index) {
+          <swiper-slide>
+            <button type="button" class="carousel-img" (click)="openLightbox(image)" aria-label="放大圖片">
+              <img [src]="image" [alt]="shop.name + ' 店家照片'" loading="lazy" />
+            </button>
+          </swiper-slide>
+        }
+      </swiper-container>
+    </section>
+
     <h1>{{ shop.name }}</h1>
     <div class="tags">
       @for (t of shop.type; track t) {
@@ -11,23 +27,46 @@
       }
     </div>
 
-    <div class="gallery">
-      @for (image of shop.images; track image) {
-        <img [src]="image" [alt]="shop.name + ' 店內照片'" loading="lazy" />
-      }
-    </div>
-
     @if (shop.doc) {
       <section class="doc">
+        <h2>店家介紹</h2>
         <p>{{ shop.doc }}</p>
       </section>
     }
 
-    @if (shop.phone.length) {
-      <section class="phones">
-        <h2>聯絡電話</h2>
+    @if (shop.products.length) {
+      <section class="products">
+        <h2>商品與服務</h2>
+        <div class="product-grid">
+          @for (p of shop.products; track p.name) {
+            <article class="product-card">
+              <button type="button" class="product-img" (click)="openLightbox(p.image)" aria-label="放大圖片">
+                <img [src]="p.image" [alt]="p.name" loading="lazy" />
+              </button>
+              <h3>{{ p.name }}</h3>
+              @if (p.price) {
+                <p class="price">{{ p.price }}</p>
+              }
+              @if (p.desc) {
+                <p class="desc">{{ p.desc }}</p>
+              }
+            </article>
+          }
+        </div>
+      </section>
+    }
+
+    @if (shop.phone.length || shop.officialWebsite) {
+      <section class="contact">
+        <h2>聯絡資訊</h2>
         @for (p of shop.phone; track p) {
           <p><mat-icon inline>call</mat-icon> {{ p }}</p>
+        }
+        @if (shop.officialWebsite) {
+          <p>
+            <mat-icon inline>language</mat-icon>
+            <a [href]="shop.officialWebsite" target="_blank" rel="noopener">官方網站</a>
+          </p>
         }
       </section>
     }
@@ -47,4 +86,13 @@
       </footer>
     }
   </div>
+
+  @if (lightboxSrc(); as src) {
+    <div class="lightbox" (click)="closeLightbox()">
+      <button type="button" class="lightbox-close" (click)="closeLightbox()" aria-label="關閉">
+        <mat-icon>close</mat-icon>
+      </button>
+      <img [src]="src" alt="" (click)="$event.stopPropagation()" />
+    </div>
+  }
 }
