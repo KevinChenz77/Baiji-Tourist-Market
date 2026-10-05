@@ -1,0 +1,94 @@
+import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+
+interface NearbyAttraction {
+  name: string;
+  driveTime: string;
+  lat: number;
+  lng: number;
+  officialWebsite: string;
+  image: string;
+  brief: string;
+}
+
+// 已於 2026-10-05 查證更新車程與座標，詳見 規格內容/03-頁面內容規格.md 周邊景點一節的查證備註。
+const nearbyAttractions: NearbyAttraction[] = [
+  {
+    name: '大板根森林溫泉渡假村',
+    driveTime: '約 5-10 分鐘',
+    lat: 24.871,
+    lng: 121.4069,
+    officialWebsite: 'https://www.dabangen.com.tw/',
+    image: 'assets/images/placeholder.jpg',
+    brief: '結合森林步道、溫泉與度假設施的園區，鄰近白雞山區，適合半日放鬆行程。',
+  },
+  {
+    name: '三峽清水祖師廟',
+    driveTime: '約 15-20 分鐘',
+    lat: 24.934,
+    lng: 121.3702,
+    officialWebsite: '',
+    image: 'assets/images/placeholder.jpg',
+    brief: '三峽地標古廟，以精細木雕、石雕聞名，與三峽老街相鄰，是在地信仰與工藝代表。',
+  },
+  {
+    name: '三峽老街（三角湧老街）',
+    driveTime: '約 15-20 分鐘',
+    lat: 24.9338,
+    lng: 121.3698,
+    officialWebsite: '',
+    image: 'assets/images/placeholder.jpg',
+    brief: '紅磚拱廊與巴洛克式牌樓街屋保存完整，沿街有小吃、茶莊與文創店家，適合散步採買。',
+  },
+  {
+    name: '滿月圓國家森林遊樂區',
+    driveTime: '約 30-40 分鐘',
+    lat: 24.8304,
+    lng: 121.4447,
+    officialWebsite: 'https://recreation.forest.gov.tw/RA/ra_p3.aspx?no=RA000012',
+    image: 'assets/images/placeholder.jpg',
+    brief: '林相豐富、瀑布群與吊橋景觀兼具的森林遊樂區，有多條親子友善步道。',
+  },
+  {
+    name: '鶯歌老街',
+    driveTime: '約 25-30 分鐘',
+    lat: 24.9522,
+    lng: 121.3473,
+    officialWebsite: '',
+    image: 'assets/images/placeholder.jpg',
+    brief: '台灣陶瓷重鎮，老街兩側林立陶藝店家與 DIY 體驗工坊，適合選購紀念品。',
+  },
+  {
+    name: '新北市立鶯歌陶瓷博物館',
+    driveTime: '約 25-30 分鐘',
+    lat: 24.9493,
+    lng: 121.352,
+    officialWebsite: 'https://www.ceramics.ntpc.gov.tw/',
+    image: 'assets/images/placeholder.jpg',
+    brief: '以陶瓷為主題的公立博物館，常設展介紹台灣陶瓷發展史，另有特展與戶外水景廣場。',
+  },
+  {
+    name: '熊空茶園（禾煦熊空）',
+    driveTime: '約 40 分鐘',
+    lat: 24.8784,
+    lng: 121.4625,
+    officialWebsite: 'https://www.xiongkongtea.com/',
+    image: 'assets/images/placeholder.jpg',
+    brief:
+      '海拔 700 公尺高山秘境茶園，占地廣闊，有百年茶廠、森林玻璃屋咖啡廳與櫻花林，適合半日賞景放鬆（每週二公休）。',
+  },
+];
+
+@Component({
+  selector: 'app-nearby-attractions',
+  imports: [MatIconModule],
+  templateUrl: './nearby-attractions.html',
+  styleUrl: './nearby-attractions.scss',
+})
+export class NearbyAttractions {
+  protected readonly attractions = nearbyAttractions;
+
+  protected navUrl(attraction: NearbyAttraction): string {
+    return `https://www.google.com/maps/dir/?api=1&destination=${attraction.lat},${attraction.lng}`;
+  }
+}

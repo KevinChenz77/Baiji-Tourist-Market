@@ -7,16 +7,65 @@
 
 @use 'tailwindcss';
 
+// Tailwind v4 CSS-first theme tokens — values sourced from
+// 設計風格/01-視覺風格指南.md 第 4 節色票（取樣自參考插畫圖，非主觀指定）。
+// Generates utilities like bg-primary, text-primary, font-heading, rounded-card.
+// `static` keyword: component SCSS references these as plain var(--color-*), not
+// Tailwind utility classes, so Tailwind's content-scanner never sees them "used" and
+// silently drops them from the build without this — forces them to always emit.
+@theme static {
+  --color-primary: #bb4f36;
+  --color-primary-muted: #a35b40;
+  --color-secondary: #5c7a54;
+  --color-secondary-deep: #456150;
+  --color-accent: #d1ce65;
+  --color-background: #f7f1e6;
+  --color-surface: #fbf7ef;
+  --color-border: #c4b9b2;
+  --color-text: #3a332c;
+
+  --font-heading: 'Chiron GoRound TC', sans-serif;
+  --font-body: 'Noto Sans TC', sans-serif;
+
+  --radius-card: 20px;
+}
+
 html {
   height: 100%;
+
+  // M3 theme: primary/tertiary start from the closest stock Material palette
+  // (red/orange — our brand terracotta sits in that hue family), then the
+  // $overrides map below pins the exact brand hex values we've confirmed in
+  // the style guide. Tokens we haven't explicitly defined (containers, error,
+  // tertiary shades, state layers) are left to the base palette's own
+  // M3-computed values so contrast pairings stay guaranteed-safe rather than
+  // hand-guessed. theme-type is pinned to `light` (not `color-scheme`) since
+  // dark mode hasn't been designed — see 設計風格/01-視覺風格指南.md 第 9 節.
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$red-palette,
+        tertiary: mat.$orange-palette,
+        theme-type: light,
       ),
-      typography: Roboto,
+      typography: (
+        plain-family: ('Noto Sans TC', sans-serif),
+        brand-family: ('Chiron GoRound TC', sans-serif),
+      ),
       density: 0,
+    ),
+    (
+      primary: #bb4f36,
+      on-primary: #fbf7ef,
+      secondary: #5c7a54,
+      background: #f7f1e6,
+      surface: #fbf7ef,
+      on-surface: #3a332c,
+      on-background: #3a332c,
+      outline: #c4b9b2,
+      // Card corner radius 20px (default M3 corner-medium is 12px) — 第 6 節.
+      // corner-full (buttons, 9999px) is already Material's default, no override needed.
+      corner-medium: 20px,
     )
   );
 }

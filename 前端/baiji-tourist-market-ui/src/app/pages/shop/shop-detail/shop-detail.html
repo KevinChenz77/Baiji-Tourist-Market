@@ -1,0 +1,50 @@
+@if (shop(); as shop) {
+  <div class="wrap">
+    <button type="button" class="back-link" (click)="goBack()">
+      <mat-icon inline>arrow_back</mat-icon> 返回商場店家列表
+    </button>
+
+    <h1>{{ shop.name }}</h1>
+    <div class="tags">
+      @for (t of shop.type; track t) {
+        <span class="tag">{{ categoryLabels[t] }}</span>
+      }
+    </div>
+
+    <div class="gallery">
+      @for (image of shop.images; track image) {
+        <img [src]="image" alt="" />
+      }
+    </div>
+
+    @if (shop.doc) {
+      <section class="doc">
+        <p>{{ shop.doc }}</p>
+      </section>
+    }
+
+    @if (shop.phone.length) {
+      <section class="phones">
+        <h2>聯絡電話</h2>
+        @for (p of shop.phone; track p) {
+          <p><mat-icon inline>call</mat-icon> {{ p }}</p>
+        }
+      </section>
+    }
+
+    @if (shop.fb || shop.ig) {
+      <footer class="social">
+        @if (shop.fb) {
+          <a [href]="shop.fb" target="_blank" rel="noopener" aria-label="Facebook">
+            <mat-icon>thumb_up</mat-icon>
+          </a>
+        }
+        @if (shop.ig) {
+          <a [href]="shop.ig" target="_blank" rel="noopener" aria-label="Instagram">
+            <mat-icon>photo_camera</mat-icon>
+          </a>
+        }
+      </footer>
+    }
+  </div>
+}

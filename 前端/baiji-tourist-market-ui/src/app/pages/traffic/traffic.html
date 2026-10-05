@@ -1,0 +1,76 @@
+<div class="wrap">
+  <h1>交通方式</h1>
+
+  <mat-tab-group animationDuration="150ms">
+    <mat-tab label="開車">
+      <div class="tab-body">
+        @for (route of drivingRoutes; track route.title) {
+          <article class="route-card">
+            <h3>{{ route.title }}</h3>
+            <p>{{ route.guide }}</p>
+            <a class="map-btn" [href]="route.mapUrl" target="_blank" rel="noopener">
+              <mat-icon inline>map</mat-icon> 在 Google 地圖開啟路線
+            </a>
+          </article>
+        }
+
+        <p class="note">山路行車注意事項：沿線多彎道與會車路段，請減速慢行、注意對向來車，假日香期車流量較大時尤須留意。</p>
+
+        <div class="embed-map">
+          <iframe
+            [src]="embedMapUrl"
+            title="白雞停車場位置地圖"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="大眾運輸">
+      <div class="tab-body">
+        <div class="transit-banner">
+          <mat-icon>directions_bus</mat-icon>
+          <mat-icon>train</mat-icon>
+        </div>
+
+        @for (option of transitOptions; track option.title) {
+          <article class="transit-card">
+            <div class="transit-head">
+              <h3>{{ option.title }}</h3>
+              <div class="badges">
+                @for (badge of option.badges; track badge.label) {
+                  <a [href]="badge.url" target="_blank" rel="noopener" class="badge">
+                    {{ badge.label }} <mat-icon inline>open_in_new</mat-icon>
+                  </a>
+                }
+              </div>
+            </div>
+            <p>{{ option.summary }}</p>
+            <p class="walk-note">{{ option.walkNote }}</p>
+            @if (option.extraNote) {
+              <p class="extra-note"><mat-icon inline>info</mat-icon> {{ option.extraNote }}</p>
+            }
+            <a
+              class="map-btn"
+              [href]="transitMapUrl(option.mapTransitMode)"
+              target="_blank"
+              rel="noopener"
+            >
+              <mat-icon inline>near_me</mat-icon> 用 Google 地圖規劃路線
+            </a>
+          </article>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <section class="parking">
+    <h2>停車資訊</h2>
+    <ul>
+      <li>行修宮前方停車場為<strong>收費</strong>停車場，確切車位數、收費方式（時數計費／單次計費）準備中，待商場管理方提供。</li>
+      <li><strong>大型遊覽車</strong>停靠於「行修宮前第二停車場」（與一般小客車／機車停車場分開）。</li>
+      <li>白雞山登山口僅能供 2～3 部汽車路邊臨停，車位非常有限，建議優先停在行修宮停車場、再步行前往登山口，避免登山口周邊違停。</li>
+    </ul>
+  </section>
+</div>

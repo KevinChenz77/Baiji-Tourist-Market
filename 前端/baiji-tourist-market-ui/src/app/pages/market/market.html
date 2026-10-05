@@ -1,0 +1,32 @@
+<div class="wrap">
+  <div class="page-head">
+    <a class="about-btn" routerLink="/market/about">
+      <mat-icon inline>auto_stories</mat-icon> 簡介與沿革
+    </a>
+    <h1>商場介紹</h1>
+  </div>
+
+  <section class="facility-map">
+    <mat-icon>map</mat-icon>
+    <p>地圖製作中</p>
+    <p class="sub">分區導覽圖需現場踏查或由商場管理方提供後製作，目前先保留版位。</p>
+  </section>
+
+  <section class="facility-list">
+    <h2>必要設施</h2>
+    <div class="grid">
+      @for (facility of facilities; track facility.label) {
+        <article class="facility-card" [class.pending]="facility.pending">
+          <mat-icon>{{ facility.icon }}</mat-icon>
+          <div>
+            <h3>{{ facility.label }}</h3>
+            <p>{{ facility.detail }}</p>
+            @if (facility.label === '廁所') {
+              <img [src]="toiletPhoto" alt="廁所位置示意圖" class="toilet-photo" />
+            }
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+</div>

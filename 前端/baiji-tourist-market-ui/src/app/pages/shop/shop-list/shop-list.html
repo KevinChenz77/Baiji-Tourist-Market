@@ -1,0 +1,60 @@
+<div class="wrap">
+  <h1>商場店家</h1>
+
+  <div class="filter-bar">
+    <div class="filter-buttons">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="currentCategory() === category"
+          (click)="selectCategory(category)"
+        >
+          {{ categoryLabels[category] }}
+        </button>
+      }
+    </div>
+
+    <select class="filter-select" [value]="currentCategory()" (change)="onMobileSelect($event)">
+      @for (category of categories; track category) {
+        <option [value]="category">{{ categoryLabels[category] }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="shop-grid">
+    @for (shop of shops(); track shop.number) {
+      <article class="shop-card">
+        @if (shop.officialWebsite) {
+          <a class="card-link" [href]="shop.officialWebsite" target="_blank" rel="noopener">
+            <img [src]="shop.images[0]" alt="" />
+            <div class="card-body">
+              <h3>{{ shop.name }}</h3>
+              <div class="tags">
+                @for (t of shop.type; track t) {
+                  <span class="tag">{{ categoryLabels[t] }}</span>
+                }
+              </div>
+              <p class="brief">{{ shop.brief }}</p>
+              <p class="phone">{{ shop.phone[0] }}</p>
+            </div>
+          </a>
+        } @else {
+          <a class="card-link" [routerLink]="['/shop/detail', shop.number]">
+            <img [src]="shop.images[0]" alt="" />
+            <div class="card-body">
+              <h3>{{ shop.name }}</h3>
+              <div class="tags">
+                @for (t of shop.type; track t) {
+                  <span class="tag">{{ categoryLabels[t] }}</span>
+                }
+              </div>
+              <p class="brief">{{ shop.brief }}</p>
+              <p class="phone">{{ shop.phone[0] }}</p>
+            </div>
+          </a>
+        }
+      </article>
+    }
+  </div>
+</div>

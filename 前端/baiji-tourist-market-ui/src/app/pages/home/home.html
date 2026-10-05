@@ -1,0 +1,65 @@
+<section class="banner">
+  <swiper-container
+    loop="true"
+    autoplay-delay="4500"
+    autoplay-disable-on-interaction="false"
+    pagination="true"
+  >
+    @for (image of bannerImages; track image) {
+      <swiper-slide>
+        <img [src]="image" alt="三峽白雞觀光商場風景" />
+      </swiper-slide>
+    }
+  </swiper-container>
+</section>
+
+<section class="news">
+  <div class="wrap">
+    <h2>最新訊息</h2>
+    <ul>
+      @for (item of newsList; track item.title + item.createdAt) {
+        <li>
+          <time>{{ item.createdAt }}</time>
+          @if (item.link) {
+            <a [href]="item.link" target="_blank" rel="noopener">{{ item.title }}</a>
+          } @else {
+            <span>{{ item.title }}</span>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="shop-ads">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>店家工商廣告</h2>
+      <a routerLink="/shop">逛逛商場店家 →</a>
+    </div>
+    <swiper-container
+      slides-per-view="2"
+      space-between="16"
+      grab-cursor="true"
+      breakpoints='{"1024": {"slidesPerView": 4}}'
+    >
+      @for (ad of shopAds; track $index) {
+        <swiper-slide>
+          @if (ad.link) {
+            <a class="ad-card" [href]="ad.link" target="_blank" rel="noopener">
+              <img [src]="ad.image" alt="" />
+              <h3>{{ ad.title }}</h3>
+              <p>{{ ad.brief }}</p>
+            </a>
+          } @else {
+            <div class="ad-card not-clickable">
+              <img [src]="ad.image" alt="" />
+              <h3>{{ ad.title }}</h3>
+              <p>{{ ad.brief }}</p>
+            </div>
+          }
+        </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+</section>

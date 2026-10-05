@@ -1,0 +1,27 @@
+<div class="wrap">
+  <h1>周邊三峽景點</h1>
+  <p class="intro">以白雞商場為中心，依車程遠近排列，逛完商場後順遊三峽的推薦景點。</p>
+
+  <div class="attraction-grid">
+    @for (attraction of attractions; track attraction.name) {
+      <article class="attraction-card">
+        <img [src]="attraction.image" alt="" />
+        <div class="card-body">
+          <h3>{{ attraction.name }}</h3>
+          <p class="drive-time"><mat-icon inline>directions_car</mat-icon> {{ attraction.driveTime }}</p>
+          <p class="brief">{{ attraction.brief }}</p>
+          <div class="actions">
+            <a class="action-btn" [href]="navUrl(attraction)" target="_blank" rel="noopener">
+              <mat-icon inline>navigation</mat-icon> 導航
+            </a>
+            @if (attraction.officialWebsite) {
+              <a class="action-btn" [href]="attraction.officialWebsite" target="_blank" rel="noopener">
+                <mat-icon inline>open_in_new</mat-icon> 外部連結
+              </a>
+            }
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</div>

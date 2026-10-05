@@ -1,0 +1,18 @@
+<div class="wrap">
+  <h1>登山資訊</h1>
+  <p class="intro">
+    點擊卡片將開新分頁前往健行筆記等專業登山資料網站，查看完整里程、路況與難度資訊，本站不重複維護這些容易過時的數據。
+  </p>
+
+  <div class="trail-grid">
+    @for (trail of trails; track trail.name) {
+      <a class="trail-card" [href]="trail.sourceUrl" target="_blank" rel="noopener">
+        <img [src]="trail.image" alt="" />
+        <div class="card-body">
+          <h3>{{ trail.name }} <mat-icon inline>open_in_new</mat-icon></h3>
+          <p>{{ trail.brief }}</p>
+        </div>
+      </a>
+    }
+  </div>
+</div>
