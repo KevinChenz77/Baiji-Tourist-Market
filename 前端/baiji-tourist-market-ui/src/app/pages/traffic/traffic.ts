@@ -113,6 +113,8 @@ export class Traffic {
   protected readonly transitOptions = transitOptions;
   protected readonly embedMapUrl: SafeResourceUrl =
     this.sanitizer.bypassSecurityTrustResourceUrl(embedMapUrl);
+  protected readonly motorcycleParkingPhoto =
+    'assets/images/traffic/motorcycle-parking-location.png';
 
   constructor() {
     setPageMeta(

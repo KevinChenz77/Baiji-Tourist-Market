@@ -21,8 +21,21 @@
           <div>
             <h3>{{ facility.label }}</h3>
             <p>{{ facility.detail }}</p>
+            @if (facility.rules) {
+              <ol class="rules">
+                @for (rule of facility.rules; track rule) {
+                  <li>{{ rule }}</li>
+                }
+              </ol>
+            }
             @if (facility.label === '廁所') {
-              <img [src]="toiletPhoto" alt="廁所位置示意圖" class="toilet-photo" loading="lazy" />
+              <img [src]="toiletPhoto" alt="廁所位置示意圖" class="facility-photo" loading="lazy" />
+            }
+            @if (facility.label === '飲水機') {
+              <img [src]="waterFountainPhoto" alt="飲水機位置示意圖" class="facility-photo" loading="lazy" />
+            }
+            @if (facility.label === '休憩區') {
+              <img [src]="restAreaPhoto" alt="商場中庭休憩區實景" class="facility-photo" loading="lazy" />
             }
           </div>
         </article>

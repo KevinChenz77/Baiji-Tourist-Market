@@ -110,7 +110,18 @@ h2 {
   opacity: 0.65;
 }
 
-.toilet-photo {
+.rules {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.facility-photo {
   margin-top: 0.5rem;
   width: 100%;
   max-width: 220px;

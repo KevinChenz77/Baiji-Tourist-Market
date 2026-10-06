@@ -18,6 +18,7 @@ interface ShopAd {
 const bannerImages: string[] = [
   'assets/images/banner/banner-01.jpg',
   'assets/images/banner/banner-02.jpg',
+  'assets/images/banner/banner-03.jpeg',
 ];
 
 const newsList: NewsItem[] = [

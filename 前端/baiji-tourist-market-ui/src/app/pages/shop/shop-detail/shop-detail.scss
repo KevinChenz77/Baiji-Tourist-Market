@@ -157,13 +157,45 @@ section h2 {
 
 .social {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
   margin-top: 2rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--color-border);
 
-  a {
-    color: var(--color-secondary-deep);
+  .social-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+
+    mat-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      font-size: 1.2rem;
+    }
+
+    &.facebook {
+      background: #1877f2;
+    }
+
+    &.instagram {
+      background: radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+    }
+
+    &.line {
+      background: #06c755;
+    }
   }
 }
 

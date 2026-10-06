@@ -149,11 +149,20 @@ h2 {
 
   ul {
     margin: 0;
-    padding-left: 1.2rem;
+    padding: 0;
+    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     font-size: 0.92rem;
     line-height: 1.6;
   }
+}
+
+.parking-photo {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 320px;
+  border-radius: var(--radius-card);
+  display: block;
 }

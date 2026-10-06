@@ -29,6 +29,7 @@ export interface Shop {
   officialWebsite: string;
   fb: string;
   ig: string;
+  line: string;
 }
 
 const shops: Shop[] = [
@@ -52,6 +53,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '02',
@@ -72,6 +74,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '03',
@@ -92,6 +95,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '04',
@@ -112,6 +116,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '05',
@@ -132,6 +137,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '06',
@@ -152,6 +158,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '07',
@@ -172,6 +179,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '08',
@@ -192,6 +200,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '09',
@@ -212,6 +221,7 @@ const shops: Shop[] = [
     officialWebsite: '',
     fb: '',
     ig: '',
+    line: '',
   },
   {
     number: '10',
@@ -232,6 +242,7 @@ const shops: Shop[] = [
     officialWebsite: 'https://www.google.com',
     fb: '',
     ig: '',
+    line: '',
   },
 ];
 
