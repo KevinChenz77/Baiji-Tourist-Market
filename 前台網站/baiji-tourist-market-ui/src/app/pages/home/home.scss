@@ -1,0 +1,29 @@
+// ponytail: <dialog> open/close transition mixes `display`/`overlay` discrete-property
+// transitions with @starting-style on both the element and its ::backdrop — no Tailwind
+// utility combination expresses this, so it stays native CSS (see CLAUDE.md styling note).
+.news-dialog {
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    display 0.22s allow-discrete,
+    overlay 0.22s allow-discrete;
+
+  &::backdrop {
+    background: rgb(0 0 0 / 0.5);
+    transition:
+      opacity 0.22s ease,
+      display 0.22s allow-discrete,
+      overlay 0.22s allow-discrete;
+  }
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+
+  &::backdrop {
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}

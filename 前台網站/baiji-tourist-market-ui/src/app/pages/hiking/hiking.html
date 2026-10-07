@@ -1,0 +1,25 @@
+<div class="max-w-[1100px] mx-auto px-5 pt-6 pb-12">
+  <h1 class="font-heading text-primary text-[1.75rem] mb-[0.4rem]">登山資訊</h1>
+  <p class="mb-6 opacity-75 text-[0.92rem] max-w-[640px]">
+    點擊卡片將開新分頁前往健行筆記等專業登山資料網站，查看完整里程、路況與難度資訊，本站不重複維護這些容易過時的數據。
+  </p>
+
+  <div class="grid grid-cols-4 gap-5 max-[860px]:grid-cols-2">
+    @for (trail of trails; track trail.name) {
+      <a
+        class="group block border border-border rounded-card overflow-hidden bg-surface no-underline text-text hover:border-primary"
+        [href]="trail.sourceUrl"
+        target="_blank"
+        rel="noopener"
+      >
+        <img [src]="trail.image" [alt]="trail.name" loading="lazy" class="w-full aspect-[4/3] object-cover" />
+        <div class="p-[0.85rem]">
+          <h3 class="flex items-center gap-[0.3rem] text-[0.98rem] mb-[0.4rem] group-hover:text-primary">
+            {{ trail.name }} <mat-icon inline>open_in_new</mat-icon>
+          </h3>
+          <p class="text-[0.82rem] opacity-80 m-0 line-clamp-4">{{ trail.brief }}</p>
+        </div>
+      </a>
+    }
+  </div>
+</div>

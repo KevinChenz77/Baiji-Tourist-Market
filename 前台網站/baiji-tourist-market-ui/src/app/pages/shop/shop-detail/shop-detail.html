@@ -1,0 +1,144 @@
+@if (shop(); as shop) {
+  <div class="max-w-[760px] mx-auto px-5 pt-6 pb-12">
+    <button
+      type="button"
+      class="inline-flex items-center gap-[0.3rem] bg-transparent border-0 text-secondary-deep text-[0.9rem] cursor-pointer p-0 mb-4 hover:underline"
+      (click)="goBack()"
+    >
+      <mat-icon inline>arrow_back</mat-icon> 返回商場店家列表
+    </button>
+
+    <section class="rounded-card overflow-hidden">
+      <swiper-container class="block w-full aspect-[16/10] overflow-hidden" loop="true" pagination="true" navigation="true">
+        @for (image of shop.images; track image + $index) {
+          <swiper-slide>
+            <button
+              type="button"
+              class="block w-full h-full border-0 p-0 bg-transparent cursor-zoom-in"
+              (click)="openLightbox(image)"
+              aria-label="放大圖片"
+            >
+              <img [src]="image" [alt]="shop.name + ' 店家照片'" loading="lazy" class="w-full h-full object-cover block" />
+            </button>
+          </swiper-slide>
+        }
+      </swiper-container>
+    </section>
+
+    <h1 class="font-heading text-primary text-[1.6rem] mt-4 mb-2">{{ shop.name }}</h1>
+    <div class="flex gap-[0.4rem] mb-5">
+      @for (t of shop.type; track t) {
+        <span class="text-[0.78rem] bg-secondary/15 text-secondary-deep rounded-full px-[0.65rem] py-[0.15rem]">{{ categoryLabels[t] }}</span>
+      }
+    </div>
+
+    @if (shop.doc) {
+      <section class="mt-6">
+        <h2 class="font-heading text-primary text-[1.05rem] mb-2">店家介紹</h2>
+        <p class="text-[0.95rem] leading-[1.75] whitespace-pre-line">{{ shop.doc }}</p>
+      </section>
+    }
+
+    @if (shop.products.length) {
+      <section class="mt-7">
+        <h2 class="font-heading text-primary text-[1.05rem] mb-2">商品與服務</h2>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-4">
+          @for (p of shop.products; track p.name) {
+            <article>
+              <button
+                type="button"
+                class="block w-full border-0 p-0 bg-transparent cursor-zoom-in"
+                (click)="openLightbox(p.image)"
+                aria-label="放大圖片"
+              >
+                <img [src]="p.image" [alt]="p.name" loading="lazy" class="w-full aspect-square object-cover rounded-card" />
+              </button>
+              <h3 class="text-[0.9rem] mt-2 mb-[0.15rem]">{{ p.name }}</h3>
+              @if (p.price) {
+                <p class="text-[0.85rem] text-secondary-deep font-semibold m-0">{{ p.price }}</p>
+              }
+              @if (p.desc) {
+                <p class="text-[0.8rem] text-[color:var(--color-text-muted,#666)] mt-[0.2rem] leading-[1.5]">{{ p.desc }}</p>
+              }
+            </article>
+          }
+        </div>
+      </section>
+    }
+
+    @if (shop.phone.length || shop.officialWebsite || shop.fb || shop.ig || shop.line) {
+      <section class="mt-7">
+        <h2 class="font-heading text-primary text-[1.05rem] mb-2">聯絡資訊</h2>
+        @for (p of shop.phone; track p) {
+          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]"><mat-icon inline>call</mat-icon> {{ p }}</p>
+        }
+        @if (shop.officialWebsite) {
+          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+            <mat-icon inline>language</mat-icon>
+            <a [href]="shop.officialWebsite" target="_blank" rel="noopener" class="text-secondary-deep">官方網站</a>
+          </p>
+        }
+        @if (shop.fb) {
+          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+            <mat-icon inline svgIcon="facebook"></mat-icon>
+            <a [href]="shop.fb" target="_blank" rel="noopener" class="text-secondary-deep">Facebook</a>
+          </p>
+        }
+        @if (shop.ig) {
+          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+            <mat-icon inline svgIcon="instagram"></mat-icon>
+            <a [href]="shop.ig" target="_blank" rel="noopener" class="text-secondary-deep">Instagram</a>
+          </p>
+        }
+        @if (shop.line) {
+          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+            <mat-icon inline svgIcon="line"></mat-icon>
+            <a [href]="shop.line" target="_blank" rel="noopener" class="text-secondary-deep">LINE</a>
+          </p>
+        }
+      </section>
+    }
+
+    <footer class="flex items-center gap-3 mt-8 pt-5 border-t border-border">
+      <span class="text-[0.85rem] text-[color:var(--color-text-muted,#666)]">分享本店資訊：</span>
+      <button
+        type="button"
+        class="flex items-center justify-center w-9 h-9 border-0 rounded-full text-white cursor-pointer bg-[#1877f2]"
+        (click)="share('facebook')"
+        aria-label="分享到 Facebook"
+      >
+        <mat-icon svgIcon="facebook" class="w-[1.2rem] h-[1.2rem] text-[1.2rem]"></mat-icon>
+      </button>
+      <button
+        type="button"
+        class="flex items-center justify-center w-9 h-9 border-0 rounded-full text-white cursor-pointer bg-[radial-gradient(circle_at_30%_110%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285aeb_90%)]"
+        (click)="share('instagram')"
+        aria-label="分享到 Instagram"
+      >
+        <mat-icon svgIcon="instagram" class="w-[1.2rem] h-[1.2rem] text-[1.2rem]"></mat-icon>
+      </button>
+      <button
+        type="button"
+        class="flex items-center justify-center w-9 h-9 border-0 rounded-full text-white cursor-pointer bg-[#06c755]"
+        (click)="share('line')"
+        aria-label="分享到 LINE"
+      >
+        <mat-icon svgIcon="line" class="w-[1.2rem] h-[1.2rem] text-[1.2rem]"></mat-icon>
+      </button>
+    </footer>
+  </div>
+
+  @if (lightboxSrc(); as src) {
+    <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-[1000] p-8" (click)="closeLightbox()">
+      <button
+        type="button"
+        class="absolute top-4 right-4 bg-black/40 text-white border-0 rounded-full w-9 h-9 flex items-center justify-center cursor-pointer"
+        (click)="closeLightbox()"
+        aria-label="關閉"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <img [src]="src" alt="" class="max-w-full max-h-full object-contain rounded-card cursor-default" (click)="$event.stopPropagation()" />
+    </div>
+  }
+}

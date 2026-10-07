@@ -1,0 +1,96 @@
+<div class="max-w-[960px] mx-auto px-5 pt-6 pb-12">
+  <h1 class="font-heading text-primary text-[1.75rem] mb-4">交通方式</h1>
+
+  <mat-tab-group animationDuration="150ms">
+    <mat-tab label="開車">
+      <div class="py-6 flex flex-col gap-5">
+        @for (route of drivingRoutes; track route.title) {
+          <article class="border border-border rounded-card px-5 py-4 bg-surface">
+            <h3 class="text-[1.05rem] mb-2">{{ route.title }}</h3>
+            <p class="text-[0.92rem] leading-[1.55] mb-3">{{ route.guide }}</p>
+            <a
+              class="inline-flex items-center gap-[0.35rem] text-primary border border-primary rounded-full px-[0.9rem] py-[0.4rem] text-[0.85rem] font-semibold no-underline hover:bg-primary hover:text-surface"
+              [href]="route.mapUrl"
+              target="_blank"
+              rel="noopener"
+            >
+              <mat-icon inline>map</mat-icon> 在 Google 地圖開啟路線
+            </a>
+          </article>
+        }
+
+        <p class="text-[0.85rem] opacity-75">山路行車注意事項：沿線多彎道與會車路段，請減速慢行、注意對向來車，假日香期車流量較大時尤須留意。</p>
+
+        <div class="rounded-card overflow-hidden border border-border">
+          <iframe
+            [src]="embedMapUrl"
+            title="白雞停車場位置地圖"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="w-full h-[320px] border-0 block"
+          ></iframe>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="大眾運輸">
+      <div class="py-6 flex flex-col gap-5">
+        <div class="flex justify-center gap-6 p-6 rounded-card bg-[color-mix(in_srgb,var(--color-secondary)_12%,var(--color-background))]">
+          <mat-icon class="text-[2.25rem] w-[2.25rem] h-[2.25rem] text-secondary-deep">directions_bus</mat-icon>
+          <mat-icon class="text-[2.25rem] w-[2.25rem] h-[2.25rem] text-secondary-deep">train</mat-icon>
+        </div>
+
+        @for (option of transitOptions; track option.title) {
+          <article class="border border-border rounded-card px-5 py-4 bg-surface">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <h3 class="text-[1.05rem] mb-2">{{ option.title }}</h3>
+              <div class="flex gap-[0.4rem]">
+                @for (badge of option.badges; track badge.label) {
+                  <a
+                    [href]="badge.url"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex items-center gap-[0.2rem] bg-accent/35 text-text rounded-full px-[0.6rem] py-[0.15rem] text-[0.8rem] font-bold no-underline"
+                  >
+                    {{ badge.label }} <mat-icon inline>open_in_new</mat-icon>
+                  </a>
+                }
+              </div>
+            </div>
+            <p class="text-[0.92rem] leading-[1.55] mb-3">{{ option.summary }}</p>
+            <p class="text-[0.85rem] opacity-75">{{ option.walkNote }}</p>
+            @if (option.extraNote) {
+              <p class="flex items-start gap-[0.3rem] text-primary-muted text-[0.85rem] bg-primary/8 rounded-[10px] px-3 py-2">
+                <mat-icon inline>info</mat-icon> {{ option.extraNote }}
+              </p>
+            }
+            <a
+              class="inline-flex items-center gap-[0.35rem] text-primary border border-primary rounded-full px-[0.9rem] py-[0.4rem] text-[0.85rem] font-semibold no-underline hover:bg-primary hover:text-surface"
+              [href]="transitMapUrl(option.mapTransitMode)"
+              target="_blank"
+              rel="noopener"
+            >
+              <mat-icon inline>near_me</mat-icon> 用 Google 地圖規劃路線
+            </a>
+          </article>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <section class="mt-8 pt-6 border-t border-border">
+    <h2 class="font-heading text-primary text-[1.3rem] mb-3">停車資訊</h2>
+    <ul class="m-0 p-0 list-none flex flex-col gap-2 text-[0.92rem] leading-[1.6]">
+      <li>行修宮前方停車場為<strong>收費</strong>停車場，收費標準：平日／日間每小時 20 元，當日最高 100 元；假日每小時 40 元。</li>
+      <li><strong>大型遊覽車</strong>停靠於「行修宮前第二停車場」（與一般小客車／機車停車場分開）。</li>
+      <li>白雞山登山口僅能供 2～3 部汽車路邊臨停，車位非常有限，建議優先停在行修宮停車場、再步行前往登山口，避免登山口周邊違停。</li>
+      <li>第一停車場設有<strong>機車收費停車區</strong>，商場南側與北側出口另有少許免費停車區；請遵守停車秩序，勿停放紅線區。</li>
+    </ul>
+    <img
+      [src]="motorcycleParkingPhoto"
+      alt="機車停車區與免費停車區位置示意圖"
+      class="mt-4 w-full max-w-[320px] rounded-card block"
+      loading="lazy"
+    />
+  </section>
+</div>

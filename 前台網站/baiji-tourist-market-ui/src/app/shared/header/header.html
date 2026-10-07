@@ -1,0 +1,82 @@
+<div class="max-w-[1280px] mx-auto px-5 py-3 flex items-center justify-between gap-4">
+  <a
+    class="flex items-center gap-[0.6rem] no-underline text-text font-heading font-bold text-[1.15rem] whitespace-nowrap"
+    routerLink="/"
+    (click)="closeMobileMenu()"
+    aria-label="回首頁"
+  >
+    <img src="icon-64.png" alt="" width="40" height="40" class="rounded-full" />
+    <span>三峽白雞觀光商場</span>
+  </a>
+
+  <button
+    class="!hidden max-[860px]:!inline-flex"
+    type="button"
+    mat-icon-button
+    (click)="toggleMobileMenu()"
+    [attr.aria-expanded]="mobileMenuOpen()"
+    aria-label="開啟選單"
+  >
+    <mat-icon>{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+  </button>
+
+  <nav
+    [class]="
+      'flex items-center gap-1 font-body ' +
+      'max-[860px]:absolute max-[860px]:top-full max-[860px]:inset-x-0 max-[860px]:flex-col max-[860px]:items-stretch ' +
+      'max-[860px]:bg-surface max-[860px]:border-b max-[860px]:border-border max-[860px]:px-5 max-[860px]:pt-2 max-[860px]:pb-4 max-[860px]:gap-[0.1rem] ' +
+      (mobileMenuOpen() ? 'max-[860px]:flex' : 'max-[860px]:hidden')
+    "
+  >
+    <a
+      class="inline-flex items-center justify-center gap-[0.3rem] ms-1 px-[0.85rem] py-2 rounded-full no-underline text-[0.95rem] font-bold leading-none bg-primary text-surface hover:bg-primary-muted max-[860px]:ms-0 max-[860px]:w-full max-[860px]:rounded-[10px]"
+      href="https://www.ht.org.tw/"
+      target="_blank"
+      rel="noopener"
+    >
+      行修宮官網 <mat-icon inline class="!w-[1em] !h-[1em]">open_in_new</mat-icon>
+    </a>
+    <a
+      class="px-[0.85rem] py-2 rounded-full text-text no-underline text-[0.95rem] font-medium leading-none hover:bg-primary/10 max-[860px]:text-left max-[860px]:w-full max-[860px]:rounded-[10px]"
+      routerLink="/traffic"
+      routerLinkActive="text-primary bg-primary/12"
+      (click)="closeMobileMenu()"
+    >
+      交通方式
+    </a>
+    <a
+      class="px-[0.85rem] py-2 rounded-full text-text no-underline text-[0.95rem] font-medium leading-none hover:bg-primary/10 max-[860px]:text-left max-[860px]:w-full max-[860px]:rounded-[10px]"
+      routerLink="/shop"
+      routerLinkActive="text-primary bg-primary/12"
+      (click)="closeMobileMenu()"
+    >
+      商場店家
+    </a>
+
+    <a
+      class="px-[0.85rem] py-2 rounded-full text-text no-underline text-[0.95rem] font-medium leading-none hover:bg-primary/10 max-[860px]:text-left max-[860px]:w-full max-[860px]:rounded-[10px]"
+      routerLink="/nearby/sanxia-attractions"
+      routerLinkActive="text-primary bg-primary/12"
+      (click)="closeMobileMenu()"
+    >
+      周邊景點
+    </a>
+
+    <a
+      class="px-[0.85rem] py-2 rounded-full text-text no-underline text-[0.95rem] font-medium leading-none hover:bg-primary/10 max-[860px]:text-left max-[860px]:w-full max-[860px]:rounded-[10px]"
+      routerLink="/hiking"
+      routerLinkActive="text-primary bg-primary/12"
+      (click)="closeMobileMenu()"
+    >
+      登山資訊
+    </a>
+    <a
+      class="px-[0.85rem] py-2 rounded-full text-text no-underline text-[0.95rem] font-medium leading-none hover:bg-primary/10 max-[860px]:text-left max-[860px]:w-full max-[860px]:rounded-[10px]"
+      routerLink="/market"
+      routerLinkActive="text-primary bg-primary/12"
+      (click)="closeMobileMenu()"
+    >
+      商場介紹
+    </a>
+  </nav>
+</div>

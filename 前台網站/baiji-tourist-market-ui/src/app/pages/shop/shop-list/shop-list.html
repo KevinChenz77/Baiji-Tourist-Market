@@ -1,0 +1,68 @@
+<div class="max-w-[1280px] mx-auto px-5 pt-6 pb-12">
+  <h1 class="font-heading text-primary text-[1.75rem] mb-5">商場店家</h1>
+
+  <div class="mb-6">
+    <div class="flex flex-wrap gap-2 max-[640px]:hidden">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          [class]="
+            'border rounded-full px-4 py-[0.4rem] text-[0.9rem] cursor-pointer ' +
+            (currentCategory() === category
+              ? 'bg-primary border-primary text-surface font-semibold'
+              : 'bg-surface border-border text-text')
+          "
+          (click)="selectCategory(category)"
+        >
+          {{ categoryLabels[category] }}
+        </button>
+      }
+    </div>
+
+    <select
+      class="hidden w-full px-3 py-[0.6rem] rounded-[10px] border border-border bg-surface text-[0.95rem] max-[640px]:block"
+      [value]="currentCategory()"
+      (change)="onMobileSelect($event)"
+    >
+      @for (category of categories; track category) {
+        <option [value]="category">{{ categoryLabels[category] }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="grid grid-cols-5 gap-5 max-[1024px]:grid-cols-2">
+    @for (shop of shops(); track shop.number) {
+      <article class="border border-border rounded-card overflow-hidden bg-surface">
+        @if (shop.officialWebsite) {
+          <a class="group block text-text no-underline" [href]="shop.officialWebsite" target="_blank" rel="noopener">
+            <img [src]="shop.images[0]" [alt]="shop.name" loading="lazy" class="w-full aspect-[4/3] object-cover" />
+            <div class="p-3">
+              <h3 class="text-[0.98rem] mb-[0.35rem] group-hover:text-primary">{{ shop.name }}</h3>
+              <div class="flex flex-wrap gap-[0.3rem] mb-[0.4rem]">
+                @for (t of shop.type; track t) {
+                  <span class="text-[0.72rem] bg-secondary/15 text-secondary-deep rounded-full px-2 py-[0.1rem]">{{ categoryLabels[t] }}</span>
+                }
+              </div>
+              <p class="text-[0.82rem] opacity-80 mb-[0.35rem] line-clamp-2">{{ shop.brief }}</p>
+              <p class="text-[0.78rem] opacity-65 m-0">{{ shop.phone[0] }}</p>
+            </div>
+          </a>
+        } @else {
+          <a class="group block text-text no-underline" [routerLink]="['/shop/detail', shop.number]">
+            <img [src]="shop.images[0]" [alt]="shop.name" loading="lazy" class="w-full aspect-[4/3] object-cover" />
+            <div class="p-3">
+              <h3 class="text-[0.98rem] mb-[0.35rem] group-hover:text-primary">{{ shop.name }}</h3>
+              <div class="flex flex-wrap gap-[0.3rem] mb-[0.4rem]">
+                @for (t of shop.type; track t) {
+                  <span class="text-[0.72rem] bg-secondary/15 text-secondary-deep rounded-full px-2 py-[0.1rem]">{{ categoryLabels[t] }}</span>
+                }
+              </div>
+              <p class="text-[0.82rem] opacity-80 mb-[0.35rem] line-clamp-2">{{ shop.brief }}</p>
+              <p class="text-[0.78rem] opacity-65 m-0">{{ shop.phone[0] }}</p>
+            </div>
+          </a>
+        }
+      </article>
+    }
+  </div>
+</div>

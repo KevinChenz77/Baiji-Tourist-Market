@@ -1,0 +1,39 @@
+<div class="max-w-[1280px] mx-auto px-5 pt-6 pb-12">
+  <h1 class="font-heading text-primary text-[1.75rem] mb-[0.4rem]">周邊三峽景點</h1>
+  <p class="mb-6 opacity-75 text-[0.92rem]">以白雞商場為中心，依車程遠近排列，逛完商場後順遊三峽的推薦景點。</p>
+
+  <div class="grid grid-cols-5 gap-5 max-[1024px]:grid-cols-2">
+    @for (attraction of attractions; track attraction.name) {
+      <article class="border border-border rounded-card overflow-hidden bg-surface flex flex-col">
+        <img [src]="attraction.image" [alt]="attraction.name" loading="lazy" class="w-full aspect-[4/3] object-cover" />
+        <div class="p-3 flex flex-col flex-1">
+          <h3 class="text-[0.95rem] mb-[0.3rem]">{{ attraction.name }}</h3>
+          <p class="flex items-center gap-1 text-[0.78rem] text-secondary-deep font-semibold mb-[0.4rem]">
+            <mat-icon inline>directions_car</mat-icon> {{ attraction.driveTime }}
+          </p>
+          <p class="text-[0.8rem] opacity-80 mb-3 flex-1 line-clamp-3">{{ attraction.brief }}</p>
+          <div class="flex gap-[0.4rem] flex-nowrap">
+            <a
+              class="inline-flex items-center justify-center gap-[0.2rem] border border-primary text-primary rounded-full px-2 py-[0.3rem] text-[0.75rem] font-semibold no-underline flex-1 min-w-0 whitespace-nowrap hover:bg-primary hover:text-surface"
+              [href]="navUrl(attraction)"
+              target="_blank"
+              rel="noopener"
+            >
+              <mat-icon inline>navigation</mat-icon> 導航
+            </a>
+            @if (attraction.officialWebsite) {
+              <a
+                class="inline-flex items-center justify-center gap-[0.2rem] border border-primary text-primary rounded-full px-2 py-[0.3rem] text-[0.75rem] font-semibold no-underline flex-1 min-w-0 whitespace-nowrap hover:bg-primary hover:text-surface"
+                [href]="attraction.officialWebsite"
+                target="_blank"
+                rel="noopener"
+              >
+                <mat-icon inline>open_in_new</mat-icon> 外部連結
+              </a>
+            }
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</div>
