@@ -2,9 +2,12 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   HostListener,
+  Injector,
   afterNextRender,
   computed,
+  effect,
   inject,
+  runInInjectionContext,
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -37,6 +40,7 @@ export class ShopDetail {
   private readonly shopService = inject(ShopService);
   private readonly iconRegistry = inject(MatIconRegistry);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly injector = inject(Injector);
 
   protected readonly categoryLabels = shopCategoryLabels;
 
@@ -54,17 +58,21 @@ export class ShopDetail {
       this.iconRegistry.addSvgIconLiteral(name, this.sanitizer.bypassSecurityTrustHtml(svg));
     }
 
-    // 查無對應店家時導回列表頁，不另做 404 頁面（2026-10-05 決定）。
-    const shop = this.shop();
-    if (!shop) {
-      this.router.navigateByUrl('/shop');
-      return;
-    }
-    setPageMeta(
-      `${shop.name}｜三峽白雞觀光商場店家`,
-      `${shop.brief}｜三峽白雞觀光商場`,
-      `shop/detail/${shop.number}`
-    );
+    // 店家資料改為非同步載入（Strapi API），讀完才判斷查無對應店家導回列表頁，不另做 404 頁面（2026-10-05 決定）。
+    effect(() => {
+      const shop = this.shop();
+      if (shop) {
+        runInInjectionContext(this.injector, () =>
+          setPageMeta(
+            `${shop.name}｜三峽白雞觀光商場店家`,
+            `${shop.brief}｜三峽白雞觀光商場`,
+            `shop/detail/${shop.number}`
+          )
+        );
+      } else if (!this.shopService.isLoading()) {
+        this.router.navigateByUrl('/shop');
+      }
+    });
 
     afterNextRender(async () => {
       const { register } = await import('swiper/element/bundle');

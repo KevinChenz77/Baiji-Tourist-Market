@@ -10,6 +10,7 @@
     "dev": "strapi develop",
     "develop": "strapi develop",
     "start": "strapi start",
+    "start:railway": "if [ ! -L public/uploads ]; then rm -rf public/uploads; fi; mkdir -p .data/uploads && ln -sfn ../.data/uploads public/uploads && strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry"

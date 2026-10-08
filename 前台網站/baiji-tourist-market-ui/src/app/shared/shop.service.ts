@@ -1,4 +1,6 @@
-import { Service } from '@angular/core';
+import { Service, computed } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import { API_BASE, mediaUrl } from './api';
 
 export enum ShopCategory {
   全部 = 0,
@@ -32,6 +34,8 @@ export interface Shop {
   line: string;
 }
 
+// ponytail: mock 資料保留對照、不刪除——已改接 Strapi API，見下方 ShopService。
+/*
 const shops: Shop[] = [
   {
     number: '01',
@@ -245,6 +249,7 @@ const shops: Shop[] = [
     line: '',
   },
 ];
+*/
 
 export const shopCategoryLabels: Record<ShopCategory, string> = {
   [ShopCategory.全部]: '全部',
@@ -255,9 +260,6 @@ export const shopCategoryLabels: Record<ShopCategory, string> = {
   [ShopCategory.命理]: '命理',
   [ShopCategory.服務]: '服務',
 };
-
-/** 供 app.routes.server.ts 的 getPrerenderParams 使用，產生 /shop/detail/:number 的靜態頁清單。 */
-export const shopNumbers: string[] = shops.map((shop) => shop.number);
 
 export const shopCategories: ShopCategory[] = [
   ShopCategory.全部,
@@ -278,25 +280,116 @@ function shuffle<T>(items: T[]): T[] {
   return result;
 }
 
+interface StrapiMediaFile {
+  url: string;
+}
+
+interface StrapiCategory {
+  name: string;
+}
+
+interface StrapiProduct {
+  name: string;
+  price: string;
+  desc: string;
+  image: StrapiMediaFile | null;
+}
+
+interface StrapiShop {
+  number: number;
+  name: string;
+  doc: string;
+  phone1: string;
+  phone2: string | null;
+  line: string | null;
+  fb: string | null;
+  ig: string | null;
+  officialWebsite: string | null;
+  categories: StrapiCategory[];
+  images: StrapiMediaFile[];
+  products: StrapiProduct[];
+}
+
+const categoryByLabel = new Map<string, ShopCategory>(
+  Object.entries(shopCategoryLabels).map(([key, label]) => [label, Number(key) as ShopCategory])
+);
+
+function mapShop(raw: StrapiShop): Shop {
+  return {
+    number: String(raw.number),
+    type: raw.categories
+      .map((c) => categoryByLabel.get(c.name))
+      .filter((t): t is ShopCategory => t !== undefined),
+    name: raw.name,
+    // 後端無獨立 brief 欄位，店家介紹（doc）兼作列表卡片簡述，卡片以 line-clamp 視覺截斷。
+    brief: raw.doc,
+    images: raw.images.map((img) => mediaUrl(img.url)),
+    doc: raw.doc,
+    products: raw.products.map((p) => ({
+      name: p.name,
+      price: p.price,
+      image: mediaUrl(p.image?.url),
+      desc: p.desc,
+    })),
+    phone: [raw.phone1, raw.phone2].filter((p): p is string => !!p),
+    officialWebsite: raw.officialWebsite ?? '',
+    fb: raw.fb ?? '',
+    ig: raw.ig ?? '',
+    line: raw.line ?? '',
+  };
+}
+
 @Service()
 export class ShopService {
+  private readonly shopsResource = httpResource<{ data: StrapiShop[] }>(
+    // populate=* 不會往下鑽進 products component 裡的 image 媒體欄位，需明確指定巢狀 populate。
+    () => ({
+      url: `${API_BASE}/shops`,
+      params: {
+        'populate[images]': 'true',
+        'populate[categories]': 'true',
+        'populate[products][populate]': 'image',
+        'pagination[pageSize]': '100',
+      },
+    }),
+    { defaultValue: { data: [] } }
+  );
+
+  readonly isLoading = this.shopsResource.isLoading;
+
+  private readonly allShops = computed<Shop[]>(() =>
+    this.shopsResource
+      .value()
+      .data.slice()
+      .sort((a, b) => a.number - b.number)
+      .map(mapShop)
+  );
+
   // ponytail: in-memory cache keyed by category, cleared on reload — good enough
   // since the shuffle only needs to survive list<->detail navigation within a session.
   private readonly shuffledCache = new Map<ShopCategory, Shop[]>();
+  private cachedSource: Shop[] | null = null;
 
   getAll(): Shop[] {
-    return shops;
+    return this.allShops();
   }
 
   getByCategory(category: ShopCategory): Shop[] {
+    const all = this.allShops();
     if (category === ShopCategory.全部) {
-      return shops;
+      return all;
     }
-    return shops.filter((shop) => shop.type.includes(category));
+    return all.filter((shop) => shop.type.includes(category));
   }
 
   /** 篩選後的清單以隨機順序顯示，同一分類在列表 ↔ 詳情頁來回時順序保持不變，重新整理才會重新洗牌。 */
   getShuffledByCategory(category: ShopCategory): Shop[] {
+    const source = this.allShops();
+    if (source !== this.cachedSource) {
+      // 資料來源變了（例如 API 剛載入完成），清快取重新洗牌。
+      this.shuffledCache.clear();
+      this.cachedSource = source;
+    }
     let cached = this.shuffledCache.get(category);
     if (!cached) {
       cached = shuffle(this.getByCategory(category));
@@ -306,6 +399,6 @@ export class ShopService {
   }
 
   getByNumber(number: string): Shop | undefined {
-    return shops.find((shop) => shop.number === number);
+    return this.allShops().find((shop) => shop.number === number);
   }
 }

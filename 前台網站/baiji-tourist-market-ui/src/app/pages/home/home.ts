@@ -1,6 +1,8 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, afterNextRender, signal, viewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, afterNextRender, computed, signal, viewChild } from '@angular/core';
+import { httpResource } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { setPageMeta } from '../../shared/seo';
+import { API_BASE, mediaUrl } from '../../shared/api';
 
 interface NewsItem {
   createdAt: string;
@@ -19,6 +21,33 @@ interface ActivityItem {
   content: string;
 }
 
+interface StrapiMediaFile {
+  url: string;
+}
+
+interface StrapiBanner {
+  image: StrapiMediaFile | null;
+}
+
+interface StrapiNews {
+  title: string;
+  newsDate: string;
+  externalLink: string | null;
+  image: StrapiMediaFile | null;
+  description: string | null;
+}
+
+interface StrapiActivity {
+  title: string;
+  startDate: string;
+  endDate: string;
+  brief: string;
+  content: string;
+  image: StrapiMediaFile | null;
+}
+
+// ponytail: mock 資料保留對照、不刪除——已改接 Strapi API，見 Home 元件內的 httpResource。
+/*
 const bannerImages: string[] = [
   'assets/images/banner/banner-01.jpg',
   'assets/images/banner/banner-02.jpg',
@@ -86,6 +115,7 @@ const activityList: ActivityItem[] = Array.from({ length: 4 }, () => ({
   brief: '活動版位保留中，待店家提供文案與圖片後上架。',
   content: '活動版位保留中，待店家提供文案與圖片後上架。',
 }));
+*/
 
 @Component({
   selector: 'app-home',
@@ -96,12 +126,51 @@ const activityList: ActivityItem[] = Array.from({ length: 4 }, () => ({
   styleUrl: './home.scss',
 })
 export class Home {
-  protected readonly bannerImages = bannerImages;
-  protected readonly newsList = newsList
-    .slice()
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .slice(0, 5);
-  protected readonly activityList = activityList;
+  private readonly bannersResource = httpResource<{ data: StrapiBanner[] }>(
+    () => `${API_BASE}/banners?populate=*`,
+    { defaultValue: { data: [] } }
+  );
+  private readonly newsResource = httpResource<{ data: StrapiNews[] }>(
+    () => `${API_BASE}/news?populate=*`,
+    { defaultValue: { data: [] } }
+  );
+  private readonly activitiesResource = httpResource<{ data: StrapiActivity[] }>(
+    () => `${API_BASE}/activities?populate=*`,
+    { defaultValue: { data: [] } }
+  );
+
+  protected readonly bannerImages = computed(() =>
+    this.bannersResource
+      .value()
+      .data.map((b) => mediaUrl(b.image?.url))
+      .slice(0, 5)
+  );
+
+  protected readonly newsList = computed<NewsItem[]>(() =>
+    this.newsResource
+      .value()
+      .data.map((n) => ({
+        createdAt: n.newsDate,
+        title: n.title,
+        link: n.externalLink ?? '',
+        image: mediaUrl(n.image?.url),
+        content: n.description ?? '',
+      }))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, 5)
+  );
+
+  protected readonly activityList = computed<ActivityItem[]>(() =>
+    this.activitiesResource.value().data.map((a) => ({
+      title: a.title,
+      startDate: a.startDate,
+      endDate: a.endDate,
+      image: mediaUrl(a.image?.url),
+      brief: a.brief,
+      content: a.content,
+    }))
+  );
+
   protected readonly selectedNews = signal<NewsItem | null>(null);
   protected readonly selectedActivity = signal<ActivityItem | null>(null);
   private readonly newsDialog = viewChild<ElementRef<HTMLDialogElement>>('newsDialog');

@@ -6,7 +6,7 @@
     autoplay-disable-on-interaction="false"
     pagination="true"
   >
-    @for (image of bannerImages; track image) {
+    @for (image of bannerImages(); track image) {
       <swiper-slide>
         <img [src]="image" alt="三峽白雞觀光商場風景" class="w-full h-full object-cover" />
       </swiper-slide>
@@ -18,7 +18,7 @@
   <div class="max-w-[1280px] mx-auto px-5">
     <h2 class="font-heading text-primary text-[1.4rem] mb-4">最新訊息</h2>
     <ul class="list-none m-0 p-0 flex flex-col border-t border-border">
-      @for (item of newsList; track item.title + item.createdAt) {
+      @for (item of newsList(); track item.title + item.createdAt) {
         <li class="flex items-baseline gap-4 py-3 border-b border-border">
           <time class="flex-none text-text opacity-60 text-[0.85rem] tabular-nums">{{ item.createdAt }}</time>
           @if (item.link) {
@@ -81,7 +81,7 @@
       grab-cursor="true"
       breakpoints='{"1024": {"slidesPerView": 4}}'
     >
-      @for (item of activityList; track $index) {
+      @for (item of activityList(); track $index) {
         <swiper-slide class="h-auto">
           <button
             type="button"
@@ -116,7 +116,7 @@
           ✕
         </button>
         <div class="p-6 overflow-y-auto min-[641px]:px-10 min-[641px]:py-[2.2rem]">
-          <h3 class="font-heading text-primary text-[1.2rem] mb-1 pr-8 min-[641px]:text-[1.75rem]">{{ activity.title }}</h3>
+          <h3 class="font-heading text-primary text-[1.2rem] mb-[1.5rem] pr-8 min-[641px]:text-[1.75rem]">{{ activity.title }}</h3>
           @if (activity.startDate || activity.endDate) {
             <time class="block text-text opacity-60 text-[0.85rem] mb-3 tabular-nums min-[641px]:text-[1.05rem] min-[641px]:mb-[1.4rem]">活動日期：{{ activity.startDate }}～{{ activity.endDate }}</time>
           }
