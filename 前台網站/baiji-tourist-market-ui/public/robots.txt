@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kevinchenz77.github.io/Baiji-Tourist-Market/sitemap.xml
+Sitemap: https://www.baijimarket.com/sitemap.xml

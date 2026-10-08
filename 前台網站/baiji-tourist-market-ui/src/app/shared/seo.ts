@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
-const SITE_URL = 'https://kevinchenz77.github.io/Baiji-Tourist-Market';
+const SITE_URL = 'https://www.baijimarket.com';
 
 /**
  * 在元件建構子中同步呼叫，設定該頁的 title、meta description、
