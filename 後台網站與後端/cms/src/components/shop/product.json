@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_shop_products",
+  "info": {
+    "displayName": "商品",
+    "icon": "shopping-cart"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "string",
+      "required": true,
+      "maxLength": 10
+    },
+    "desc": {
+      "type": "text",
+      "required": true,
+      "maxLength": 100
+    }
+  }
+}

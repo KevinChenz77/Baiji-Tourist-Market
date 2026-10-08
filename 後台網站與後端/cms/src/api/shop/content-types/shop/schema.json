@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shops",
+  "info": {
+    "singularName": "shop",
+    "pluralName": "shops",
+    "displayName": "商店資料",
+    "description": "商家資料，對應前台 /shop 與 /shop/detail/:number"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "number": {
+      "type": "integer",
+      "required": true,
+      "unique": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "shops"
+    },
+    "doc": {
+      "type": "text",
+      "required": true,
+      "maxLength": 500
+    },
+    "phone1": {
+      "type": "string",
+      "required": true
+    },
+    "phone2": {
+      "type": "string",
+      "required": false
+    },
+    "line": {
+      "type": "string",
+      "required": false
+    },
+    "fb": {
+      "type": "string",
+      "required": false
+    },
+    "ig": {
+      "type": "string",
+      "required": false
+    },
+    "officialWebsite": {
+      "type": "string",
+      "required": false
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "products": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shop.product"
+    },
+    "boundAccount": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user"
+    }
+  }
+}
