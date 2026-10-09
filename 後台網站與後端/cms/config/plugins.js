@@ -21,7 +21,17 @@ const deniedTypes = [
   'application/x-mach-binary',
 ];
 
-module.exports = () => ({
+module.exports = ({ env }) => ({
+  email: {
+    config: {
+      provider: 'strapi-provider-email-resend',
+      providerOptions: { apiKey: env('RESEND_API_KEY') },
+      settings: {
+        defaultFrom: env('EMAIL_FROM', 'Baiji Market <no-reply@baijimarket.com>'),
+        defaultReplyTo: env('EMAIL_REPLY_TO'),
+      },
+    },
+  },
   'users-permissions': {
     config: {
       jwtManagement: 'refresh',
