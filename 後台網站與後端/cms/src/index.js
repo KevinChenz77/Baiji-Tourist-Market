@@ -1,5 +1,7 @@
 'use strict';
 
+const { ForbiddenError } = require('@strapi/utils').errors;
+
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -7,7 +9,58 @@ module.exports = {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/*{ strapi }*/) {},
+  register({ strapi }) {
+    // 非 Super Admin（例如 webAdmin）即使有「使用者」新增／編輯／刪除權限，也只能管理 enduser 角色的帳號：
+    // 角色下拉只會看到 enduser，且後端擋掉指派其他角色、或動到非 enduser 帳號（避免改 Super Admin 的密碼）
+    // 例外：修改（update）也可以改 webAdmin 帳號的資料，但角色只能維持原樣或改成 enduser
+    const ALLOWED_ROLE_NAME = 'enduser';
+    const EDITABLE_ROLE_NAMES = [ALLOWED_ROLE_NAME, 'webAdmin'];
+    const isSuperAdmin = (user) => user?.roles?.some((r) => r.code === 'strapi-super-admin');
+    const roleIds = async (names) =>
+      (await strapi.db.query('admin::role').findMany({ where: { name: names } })).map((r) => r.id);
+    const sameIds = (a, b) => a.length === b.length && a.every((id) => b.includes(Number(id)));
+    const assertRoles = async (ids, currentIds = []) => {
+      const allowed = await roleIds([ALLOWED_ROLE_NAME]);
+      if (!sameIds(ids, currentIds) && !ids.every((id) => allowed.includes(Number(id)))) {
+        throw new ForbiddenError(`只能指派「${ALLOWED_ROLE_NAME}」角色`);
+      }
+    };
+    const findTargets = (ids) =>
+      strapi.db.query('admin::user').findMany({ where: { id: ids }, populate: ['roles'] });
+    const assertTargets = async (users, names = [ALLOWED_ROLE_NAME]) => {
+      const allowed = await roleIds(names);
+      if (users.some((u) => u.roles.some((r) => !allowed.includes(r.id)))) {
+        throw new ForbiddenError(`只能管理「${names.join('」、「')}」角色的帳號`);
+      }
+    };
+    const guard = (check, handler) => async (ctx) => {
+      if (!isSuperAdmin(ctx.state.user)) await check(ctx);
+      return handler(ctx);
+    };
+
+    strapi.get('controllers').extend('admin::user', (c) => ({
+      ...c,
+      create: guard((ctx) => assertRoles(ctx.request.body?.roles ?? []), c.create),
+      update: guard(async (ctx) => {
+        const [target] = await findTargets([ctx.params.id]);
+        if (!target) return;
+        await assertTargets([target], EDITABLE_ROLE_NAMES);
+        if (ctx.request.body?.roles) await assertRoles(ctx.request.body.roles, target.roles.map((r) => r.id));
+      }, c.update),
+      deleteOne: guard(async (ctx) => assertTargets(await findTargets([ctx.params.id])), c.deleteOne),
+      deleteMany: guard(async (ctx) => assertTargets(await findTargets(ctx.request.body?.ids ?? [])), c.deleteMany),
+    }));
+
+    strapi.get('controllers').extend('admin::role', (c) => ({
+      ...c,
+      async findAll(ctx) {
+        await c.findAll(ctx);
+        if (!isSuperAdmin(ctx.state.user)) {
+          ctx.body.data = ctx.body.data.filter((r) => r.name === ALLOWED_ROLE_NAME);
+        }
+      },
+    }));
+  },
 
   /**
    * An asynchronous bootstrap function that runs before
