@@ -3,6 +3,20 @@ import { getFetchClient } from '@strapi/strapi/admin';
 const config = {
   // 把繁體中文加進可選語言清單（Strapi 一定會保留 'en' 這個選項，無法移除，但不影響預設值）
   locales: ['zh'],
+  // 登入頁標題／副標題預設是「歡迎使用 Strapi！」，改成本站名稱（en 也蓋，避免切到英文又跑回 Strapi）
+  translations: {
+    zh: {
+      'Auth.form.welcome.title': '白雞商場後台',
+      'Auth.form.welcome.subtitle': '登入您的帳號',
+      // 受邀帳號初次設定密碼頁（標題與登入頁共用上面的 welcome.title）
+      'Auth.form.register.subtitle': '請設定您的密碼以啟用帳號',
+    },
+    en: {
+      'Auth.form.welcome.title': '白雞商場後台',
+      'Auth.form.welcome.subtitle': 'Log in to your account',
+      'Auth.form.register.subtitle': 'Set your password to activate your account',
+    },
+  },
 };
 
 // 左側「設定」選單 Strapi 寫死所有人都看得到（權限清單是空的，角色設定關不掉），
@@ -43,8 +57,13 @@ const bootstrap = () => {
   }
   // Strapi 預設分頁標題寫死為 "Strapi Admin"，登入頁不會再改它，在這裡蓋掉。
   // 登入後的內頁仍會由 Strapi 設成「頁面名 | Strapi」，後綴寫死在套件內，改不了。
-  document.title = '三峽白雞觀光商場 後台';
+  document.title = '白雞商場後台';
   hideSettingsForEndUser();
+  // 設定密碼頁的「有新功能和改進時通知我」是 Strapi 的問卷選項，非必填、對店家無用，直接藏掉。
+  // 用 confirmPassword 限定在註冊表單，避免藏到登入頁的「記得我」。
+  const style = document.createElement('style');
+  style.textContent = `form:has(input[name="confirmPassword"]) div:has(> div > div > button[role="checkbox"]) { display: none; }`;
+  document.head.appendChild(style);
 };
 
 export default {
