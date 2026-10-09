@@ -290,7 +290,7 @@ interface StrapiCategory {
 
 interface StrapiProduct {
   name: string;
-  price: string;
+  price: string | null;
   desc: string;
   image: StrapiMediaFile | null;
 }
@@ -327,7 +327,7 @@ function mapShop(raw: StrapiShop): Shop {
     doc: raw.doc,
     products: raw.products.map((p) => ({
       name: p.name,
-      price: p.price,
+      price: p.price ?? undefined,
       image: mediaUrl(p.image?.url),
       desc: p.desc,
     })),
