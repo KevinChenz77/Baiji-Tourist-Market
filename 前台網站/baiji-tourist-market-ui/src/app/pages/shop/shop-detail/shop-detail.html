@@ -9,7 +9,14 @@
     </button>
 
     <section class="rounded-card overflow-hidden">
-      <swiper-container class="block w-full aspect-[16/10] overflow-hidden" loop="true" pagination="true" navigation="true">
+      <swiper-container
+        class="block w-full aspect-[3/4] max-h-[75vh] overflow-hidden bg-black/5"
+        loop="true"
+        autoplay-delay="5000"
+        autoplay-disable-on-interaction="false"
+        pagination="true"
+        navigation="true"
+      >
         @for (image of shop.images; track image + $index) {
           <swiper-slide>
             <button
@@ -18,7 +25,7 @@
               (click)="openLightbox(image)"
               aria-label="放大圖片"
             >
-              <img [src]="image" [alt]="shop.name + ' 店家照片'" loading="lazy" class="w-full h-full object-cover block" />
+              <img [src]="image" [alt]="shop.name + ' 店家照片'" loading="lazy" class="w-full h-full object-contain block" />
             </button>
           </swiper-slide>
         }
