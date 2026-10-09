@@ -62,8 +62,15 @@ const bootstrap = () => {
   // 設定密碼頁的「有新功能和改進時通知我」是 Strapi 的問卷選項，非必填、對店家無用，直接藏掉。
   // 用 confirmPassword 限定在註冊表單，避免藏到登入頁的「記得我」。
   const style = document.createElement('style');
-  style.textContent = `form:has(input[name="confirmPassword"]) div:has(> div > div > button[role="checkbox"]) { display: none; }`;
+  // 商店資料的「分類」原本是可打字搜尋的下拉，手機點下去會跳鍵盤、出現打字游標。分類只有幾個不需搜尋，
+  // 改成像 select：輸入框唯讀（不跳鍵盤、不能打字）＋游標透明，點欄位照樣展開選單點選。
+  const CATEGORY_INPUT = 'input[role="combobox"][name="categories"]';
+  style.textContent = `form:has(input[name="confirmPassword"]) div:has(> div > div > button[role="checkbox"]) { display: none; }
+    ${CATEGORY_INPUT} { caret-color: transparent; cursor: pointer; }
+    form:has(input[name="phone1"]) label { font-size: 20px; }`; // 商店資料編輯頁的欄位名稱（店名、分類…）放大，店家較好閱讀
   document.head.appendChild(style);
+  // 在 focus 前（pointerdown）補上 readonly，React 重新渲染欄位後下次點擊也會再補
+  document.addEventListener('pointerdown', () => document.querySelector(CATEGORY_INPUT)?.setAttribute('readonly', ''), true);
 };
 
 export default {

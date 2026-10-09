@@ -75,6 +75,30 @@ module.exports = {
     const uploadSettings = (await uploadStore.get()) ?? {};
     if (!uploadSettings.autoOrientation) await uploadStore.set({ value: { ...uploadSettings, autoOrientation: true } });
 
+    // 後台編輯頁／列表的欄位名稱預設是英文欄位代號（name、phone1…），存在 DB 的版面設定裡；
+    // 每次啟動蓋成中文，本機與 Railway 都一致。其他版面設定（排版、顯示欄位）不動。
+    const fieldLabels = {
+      'content_types::api::shop.shop': {
+        number: '商家編號', name: '店名', categories: '分類', doc: '店家介紹',
+        phone1: '電話1', phone2: '電話2', line: 'LineID', fb: 'FB', ig: 'IG',
+        officialWebsite: '官網連結', images: '圖片上傳', products: '商品與服務', boundAccount: '綁定帳號',
+        createdAt: '建立時間', updatedAt: '更新時間', createdBy: '建立者', updatedBy: '更新者',
+      },
+      'components::shop.product': { image: '圖片上傳', name: '商品名稱', price: '價格', desc: '簡述' },
+    };
+    for (const [uid, labels] of Object.entries(fieldLabels)) {
+      const store = strapi.store({ type: 'plugin', name: 'content_manager', key: `configuration_${uid}` });
+      const conf = await store.get();
+      if (!conf) continue; // 首次啟動 content-manager 還沒產生設定，下次啟動再套
+      for (const [field, label] of Object.entries(labels)) {
+        const meta = conf.metadatas[field];
+        if (!meta) continue;
+        if (meta.edit) meta.edit.label = label;
+        if (meta.list) meta.list.label = label;
+      }
+      await store.set({ value: conf });
+    }
+
     // 後台（content-manager）的資料範圍限制：角色2、3 在「商店資料」的 Read／Update 權限勾上這個條件後，
     // 列表與編輯都只會出現 boundAccount 是自己的那一筆。（is-own-shop policy 只管前台 /api 路由，管不到後台）
     await strapi.admin.services.permission.conditionProvider.register({
