@@ -23,25 +23,37 @@ const config = {
 // 這裡改成只有 Super Admin 與 webAdmin 看得到（enduser 看不到）。預設先藏，確認身分才顯示，避免閃一下。
 // 只是畫面隱藏：設定頁內各功能的 API 本來就有權限保護，非管理者直接打網址也只看得到唯讀的應用程式資訊。
 const SETTINGS_LINK = 'nav a[href$="/settings"]';
+const SHOP_LIST = '/admin/content-manager/collection-types/api::shop.shop';
 const hideSettingsForEndUser = () => {
   const style = document.createElement('style');
   style.textContent = `html:not(.can-see-settings) ${SETTINGS_LINK} { display: none; }`;
   document.head.appendChild(style);
+
+  // enduser 只會用到商店資料，首頁（Strapi 歡迎頁）對他們沒用：登入後或點首頁圖示都直接導到商店資料列表
+  const redirectEndUserHome = () => {
+    if (document.documentElement.classList.contains('is-enduser') && /^\/admin\/?$/.test(location.pathname)) {
+      history.replaceState(null, '', SHOP_LIST);
+      window.dispatchEvent(new PopStateEvent('popstate')); // 讓 Strapi 的 React Router 跟著換頁，不用整頁重載
+    }
+  };
 
   let checked = false;
   new MutationObserver(async () => {
     if (!document.querySelector(SETTINGS_LINK)) {
       // 登出後選單消失，下次登入（可能換人）要重新判斷
       checked = false;
-      document.documentElement.classList.remove('can-see-settings');
+      document.documentElement.classList.remove('can-see-settings', 'is-enduser');
       return;
     }
+    redirectEndUserHome();
     if (checked) return;
     checked = true;
     try {
       const { data } = await getFetchClient().get('/admin/users/me');
       const canSee = data.data.roles.some((r) => r.code === 'strapi-super-admin' || r.name === 'webAdmin');
       document.documentElement.classList.toggle('can-see-settings', canSee);
+      document.documentElement.classList.toggle('is-enduser', !canSee);
+      redirectEndUserHome();
     } catch {
       // 查不到就維持隱藏；管理者重新整理頁面即可重查
     }
@@ -67,7 +79,8 @@ const bootstrap = () => {
   const CATEGORY_INPUT = 'input[role="combobox"][name="categories"]';
   style.textContent = `form:has(input[name="confirmPassword"]) div:has(> div > div > button[role="checkbox"]) { display: none; }
     ${CATEGORY_INPUT} { caret-color: transparent; cursor: pointer; }
-    form:has(input[name="phone1"]) label, form:has(input[name="externalLink"]) label { font-size: 24px; }`; // 商店資料、最新消息編輯頁的欄位名稱放大，店家較好閱讀
+    form:has(input[name="phone1"]) label, form:has(input[name="externalLink"]) label { font-size: 24px; }
+    @media (max-width: 1079px) { nav ul a[aria-label] svg { width: 32px; height: 32px; } }`; // 商店資料、最新消息編輯頁的欄位名稱放大，店家較好閱讀；手機版 header 中間的導覽圖示（首頁、Content Manager…）放大，1080px 以上是桌機側邊欄不動
   document.head.appendChild(style);
   // 在 focus 前（pointerdown）補上 readonly，React 重新渲染欄位後下次點擊也會再補
   document.addEventListener('pointerdown', () => document.querySelector(CATEGORY_INPUT)?.setAttribute('readonly', ''), true);
