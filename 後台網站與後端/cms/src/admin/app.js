@@ -67,7 +67,7 @@ const bootstrap = () => {
   const CATEGORY_INPUT = 'input[role="combobox"][name="categories"]';
   style.textContent = `form:has(input[name="confirmPassword"]) div:has(> div > div > button[role="checkbox"]) { display: none; }
     ${CATEGORY_INPUT} { caret-color: transparent; cursor: pointer; }
-    form:has(input[name="phone1"]) label { font-size: 20px; }`; // 商店資料編輯頁的欄位名稱（店名、分類…）放大，店家較好閱讀
+    form:has(input[name="phone1"]) label, form:has(input[name="externalLink"]) label { font-size: 24px; }`; // 商店資料、最新消息編輯頁的欄位名稱放大，店家較好閱讀
   document.head.appendChild(style);
   // 在 focus 前（pointerdown）補上 readonly，React 重新渲染欄位後下次點擊也會再補
   document.addEventListener('pointerdown', () => document.querySelector(CATEGORY_INPUT)?.setAttribute('readonly', ''), true);

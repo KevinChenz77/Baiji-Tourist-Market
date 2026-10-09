@@ -85,6 +85,10 @@ module.exports = {
         createdAt: '建立時間', updatedAt: '更新時間', createdBy: '建立者', updatedBy: '更新者',
       },
       'components::shop.product': { image: '圖片上傳', name: '商品名稱', price: '價格', desc: '簡述' },
+      'content_types::api::news.news-entry': {
+        title: '標題', newsDate: '日期', image: '圖片上傳', description: '內容簡述', externalLink: '外部連結',
+        createdAt: '建立時間', updatedAt: '更新時間', createdBy: '建立者', updatedBy: '更新者',
+      },
     };
     for (const [uid, labels] of Object.entries(fieldLabels)) {
       const store = strapi.store({ type: 'plugin', name: 'content_manager', key: `configuration_${uid}` });
