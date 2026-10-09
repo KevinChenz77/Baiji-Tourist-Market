@@ -70,6 +70,11 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }) {
+    // 手機照片靠 EXIF 標記方向，Strapi 產縮圖時會丟掉 EXIF 卻沒轉正 → 後台縮圖轉 90 度；開啟 autoOrientation 上傳時就先轉正
+    const uploadStore = strapi.store({ type: 'plugin', name: 'upload', key: 'settings' });
+    const uploadSettings = (await uploadStore.get()) ?? {};
+    if (!uploadSettings.autoOrientation) await uploadStore.set({ value: { ...uploadSettings, autoOrientation: true } });
+
     // 後台（content-manager）的資料範圍限制：角色2、3 在「商店資料」的 Read／Update 權限勾上這個條件後，
     // 列表與編輯都只會出現 boundAccount 是自己的那一筆。（is-own-shop policy 只管前台 /api 路由，管不到後台）
     await strapi.admin.services.permission.conditionProvider.register({
