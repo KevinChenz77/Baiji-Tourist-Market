@@ -17,6 +17,14 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }) {
+    // 後台（content-manager）的資料範圍限制：角色2、3 在「商店資料」的 Read／Update 權限勾上這個條件後，
+    // 列表與編輯都只會出現 boundAccount 是自己的那一筆。（is-own-shop policy 只管前台 /api 路由，管不到後台）
+    await strapi.admin.services.permission.conditionProvider.register({
+      displayName: '綁定帳號是本人',
+      name: 'is-bound-account',
+      handler: (user) => ({ 'boundAccount.id': user.id }),
+    });
+
     // 前台無須登入即可讀取：最新消息／輪播圖／店家工商廣告／商店資料／分類（見規格第5節）
     const publicReadActions = [
       'api::news.news-entry.find',

@@ -10,6 +10,9 @@ const bootstrap = () => {
   if (!window.localStorage.getItem('strapi-admin-language')) {
     window.localStorage.setItem('strapi-admin-language', 'zh');
   }
+  // Strapi 預設分頁標題寫死為 "Strapi Admin"，登入頁不會再改它，在這裡蓋掉。
+  // 登入後的內頁仍會由 Strapi 設成「頁面名 | Strapi」，後綴寫死在套件內，改不了。
+  document.title = '三峽白雞觀光商場 後台';
 };
 
 export default {
