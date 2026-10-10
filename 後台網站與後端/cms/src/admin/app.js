@@ -20,7 +20,7 @@ const config = {
 };
 
 // 左側「設定」選單 Strapi 寫死所有人都看得到（權限清單是空的，角色設定關不掉），
-// 這裡改成只有 Super Admin 與 webAdmin 看得到（enduser 看不到）。預設先藏，確認身分才顯示，避免閃一下。
+// 這裡改成只有 enduser 看不到（其他角色如 Super Admin、WebAdmin 都看得到；角色名稱不分大小寫）。預設先藏，確認身分才顯示，避免閃一下。
 // 只是畫面隱藏：設定頁內各功能的 API 本來就有權限保護，非管理者直接打網址也只看得到唯讀的應用程式資訊。
 const SETTINGS_LINK = 'nav a[href$="/settings"]';
 const SHOP_LIST = '/admin/content-manager/collection-types/api::shop.shop';
@@ -50,7 +50,7 @@ const hideSettingsForEndUser = () => {
     checked = true;
     try {
       const { data } = await getFetchClient().get('/admin/users/me');
-      const canSee = data.data.roles.some((r) => r.code === 'strapi-super-admin' || r.name === 'webAdmin');
+      const canSee = !data.data.roles.every((r) => r.name?.trim().toLowerCase() === 'enduser');
       document.documentElement.classList.toggle('can-see-settings', canSee);
       document.documentElement.classList.toggle('is-enduser', !canSee);
       redirectEndUserHome();

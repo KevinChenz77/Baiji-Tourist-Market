@@ -16,8 +16,10 @@ module.exports = {
     const ALLOWED_ROLE_NAME = 'enduser';
     const EDITABLE_ROLE_NAMES = [ALLOWED_ROLE_NAME, 'webAdmin'];
     const isSuperAdmin = (user) => user?.roles?.some((r) => r.code === 'strapi-super-admin');
+    // 角色名稱是後台手打的，大小寫、前後空白可能跟這裡不同（例如 Railway 上建成 EndUser），比對一律不分大小寫
+    const sameName = (a, b) => a?.trim().toLowerCase() === b.toLowerCase();
     const roleIds = async (names) =>
-      (await strapi.db.query('admin::role').findMany({ where: { name: names } })).map((r) => r.id);
+      (await strapi.db.query('admin::role').findMany()).filter((r) => names.some((n) => sameName(r.name, n))).map((r) => r.id);
     const sameIds = (a, b) => a.length === b.length && a.every((id) => b.includes(Number(id)));
     const assertRoles = async (ids, currentIds = []) => {
       const allowed = await roleIds([ALLOWED_ROLE_NAME]);
@@ -56,7 +58,7 @@ module.exports = {
       async findAll(ctx) {
         await c.findAll(ctx);
         if (!isSuperAdmin(ctx.state.user)) {
-          ctx.body.data = ctx.body.data.filter((r) => r.name === ALLOWED_ROLE_NAME);
+          ctx.body.data = ctx.body.data.filter((r) => sameName(r.name, ALLOWED_ROLE_NAME));
         }
       },
     }));
