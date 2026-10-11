@@ -51,6 +51,15 @@ module.exports = {
       }, c.update),
       deleteOne: guard(async (ctx) => assertTargets(await findTargets([ctx.params.id])), c.deleteOne),
       deleteMany: guard(async (ctx) => assertTargets(await findTargets(ctx.request.body?.ids ?? [])), c.deleteMany),
+      // Strapi 只在建立當下回傳邀請連結，編輯頁拿不到；未啟用帳號補回 registrationToken，編輯頁就會顯示邀請連結。
+      // enduser 看不到（只有 enduser 角色的人不補）
+      async findOne(ctx) {
+        await c.findOne(ctx);
+        const data = ctx.body?.data;
+        if (!data || data.isActive || ctx.state.user.roles.every((r) => sameName(r.name, ALLOWED_ROLE_NAME))) return;
+        const { registrationToken } = await strapi.db.query('admin::user').findOne({ where: { id: data.id } });
+        if (registrationToken) data.registrationToken = registrationToken;
+      },
     }));
 
     strapi.get('controllers').extend('admin::role', (c) => ({
