@@ -4,7 +4,7 @@
 module.exports = {
   init({ apiKey }, { defaultFrom, defaultReplyTo } = {}) {
     return {
-      async send({ from, to, cc, bcc, replyTo, subject, text, html }) {
+      async send({ from, to, cc, bcc, replyTo, subject, text, html, attachments }) {
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -17,6 +17,7 @@ module.exports = {
             subject,
             text,
             html,
+            attachments,
           }),
         });
         if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
