@@ -34,7 +34,7 @@
     },
     "phone1": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "phone2": {
       "type": "string",

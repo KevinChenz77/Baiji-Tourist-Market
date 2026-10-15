@@ -299,7 +299,7 @@ interface StrapiShop {
   number: number;
   name: string;
   doc: string;
-  phone1: string;
+  phone1: string | null;
   phone2: string | null;
   line: string | null;
   fb: string | null;

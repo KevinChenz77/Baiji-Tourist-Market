@@ -91,7 +91,7 @@ module.exports = {
     const fieldLabels = {
       'content_types::api::shop.shop': {
         number: '商家編號', name: '店名', categories: '分類', doc: '店家介紹',
-        phone1: '電話1', phone2: '電話2', line: 'LineID', fb: 'FB', ig: 'IG',
+        phone1: '電話1(建議填寫)', phone2: '電話2', line: 'LineID', fb: 'FB', ig: 'IG',
         officialWebsite: '官網連結', images: '圖片上傳', products: '商品與服務', boundAccount: '綁定帳號',
         createdAt: '建立時間', updatedAt: '更新時間', createdBy: '建立者', updatedBy: '更新者',
       },

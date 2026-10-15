@@ -611,7 +611,7 @@ export interface ApiShopShop extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
     officialWebsite: Schema.Attribute.String;
-    phone1: Schema.Attribute.String & Schema.Attribute.Required;
+    phone1: Schema.Attribute.String;
     phone2: Schema.Attribute.String;
     products: Schema.Attribute.Component<'shop.product', true>;
     publishedAt: Schema.Attribute.DateTime;
