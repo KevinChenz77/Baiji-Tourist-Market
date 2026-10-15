@@ -32,7 +32,7 @@
       </swiper-container>
     </section>
 
-    <h1 class="font-heading text-primary text-[1.6rem] mt-4 mb-2">{{ shop.name }}</h1>
+    <h1 class="font-heading text-primary text-[28px] mt-4 mb-2">{{ shop.name }}</h1>
     <div class="flex gap-[0.4rem] mb-5">
       @for (t of shop.type; track t) {
         <span class="text-[0.78rem] bg-secondary/15 text-secondary-deep rounded-full px-[0.65rem] py-[0.15rem]">{{ categoryLabels[t] }}</span>
@@ -41,14 +41,14 @@
 
     @if (shop.doc) {
       <section class="mt-6">
-        <h2 class="font-heading text-primary text-[1.05rem] mb-2">店家介紹</h2>
-        <p class="text-[0.95rem] leading-[1.75] whitespace-pre-line">{{ shop.doc }}</p>
+        <h2 class="font-heading text-primary text-[22px] mb-2">店家介紹</h2>
+        <p class="text-[18px] leading-[1.75] whitespace-pre-line">{{ shop.doc }}</p>
       </section>
     }
 
     @if (shop.products.length) {
       <section class="mt-7">
-        <h2 class="font-heading text-primary text-[1.05rem] mb-2">商品與服務</h2>
+        <h2 class="font-heading text-primary text-[22px] mb-2">商品與服務</h2>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-4">
           @for (p of shop.products; track p.name) {
             <article>
@@ -60,12 +60,12 @@
               >
                 <img [src]="p.image" [alt]="p.name" loading="lazy" class="w-full aspect-square object-cover rounded-card" />
               </button>
-              <h3 class="text-[0.9rem] mt-2 mb-[0.15rem]">{{ p.name }}</h3>
+              <h3 class="text-[18px] mt-2 mb-[0.15rem]">{{ p.name }}</h3>
               @if (p.price) {
-                <p class="text-[0.85rem] text-secondary-deep font-semibold m-0">{{ p.price }}</p>
+                <p class="text-[18px] text-secondary-deep font-semibold m-0">{{ p.price }}</p>
               }
               @if (p.desc) {
-                <p class="text-[0.8rem] text-[color:var(--color-text-muted,#666)] mt-[0.2rem] leading-[1.5]">{{ p.desc }}</p>
+                <p class="text-[18px] text-[color:var(--color-text-muted,#666)] mt-[0.2rem] leading-[1.5]">{{ p.desc }}</p>
               }
             </article>
           }
@@ -75,30 +75,30 @@
 
     @if (shop.phone.length || shop.officialWebsite || shop.fb || shop.ig || shop.line) {
       <section class="mt-7">
-        <h2 class="font-heading text-primary text-[1.05rem] mb-2">聯絡資訊</h2>
+        <h2 class="font-heading text-primary text-[22px] mb-2">聯絡資訊</h2>
         @for (p of shop.phone; track p) {
-          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]"><mat-icon inline>call</mat-icon> {{ p }}</p>
+          <p class="flex items-center gap-[0.35rem] my-1 text-[18px]"><mat-icon inline>call</mat-icon> {{ p }}</p>
         }
         @if (shop.officialWebsite) {
-          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+          <p class="flex items-center gap-[0.35rem] my-1 text-[18px]">
             <mat-icon inline>language</mat-icon>
             <a [href]="shop.officialWebsite" target="_blank" rel="noopener" class="text-secondary-deep">官方網站</a>
           </p>
         }
         @if (shop.fb) {
-          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+          <p class="flex items-center gap-[0.35rem] my-1 text-[18px]">
             <mat-icon inline svgIcon="facebook" class="!w-[1em] !h-[1em]"></mat-icon>
             <a [href]="shop.fb" target="_blank" rel="noopener" class="text-secondary-deep">Facebook</a>
           </p>
         }
         @if (shop.ig) {
-          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+          <p class="flex items-center gap-[0.35rem] my-1 text-[18px]">
             <mat-icon inline svgIcon="instagram" class="!w-[1em] !h-[1em]"></mat-icon>
             <a [href]="shop.ig" target="_blank" rel="noopener" class="text-secondary-deep">Instagram</a>
           </p>
         }
         @if (shop.line) {
-          <p class="flex items-center gap-[0.35rem] my-1 text-[0.92rem]">
+          <p class="flex items-center gap-[0.35rem] my-1 text-[18px]">
             <mat-icon inline svgIcon="line" class="!w-[1em] !h-[1em]"></mat-icon>
             <a [href]="shop.line" target="_blank" rel="noopener" class="text-secondary-deep">LINE</a>
           </p>
