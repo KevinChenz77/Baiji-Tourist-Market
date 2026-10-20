@@ -68,6 +68,45 @@
   </dialog>
 </section>
 
+<section class="pt-4 pb-8">
+  <div class="max-w-[1280px] mx-auto px-5 flex flex-col gap-8">
+    <div>
+      <h2 class="font-heading text-primary text-[1.4rem] mb-1">行修宮 服務時間</h2>
+      <p class="text-[0.85rem] opacity-60 mb-4">特例狀況會另行公告</p>
+      <table class="w-full max-w-[480px] border-collapse border-t border-border">
+        <tbody>
+          <tr class="border-b border-border">
+            <th scope="row" class="text-left font-semibold py-3 pr-4 w-24">擲筊</th>
+            <td class="py-3 tabular-nums">04:00～19:00</td>
+          </tr>
+          <tr class="border-b border-border">
+            <th scope="row" class="text-left font-semibold py-3 pr-4 w-24">收驚</th>
+            <td class="py-3 tabular-nums">11:20～16:00（週日至 17:00）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h2 class="font-heading text-primary text-[1.4rem] mb-4">行修宮常見問答</h2>
+      <ul class="list-none m-0 p-0 grid grid-cols-2 gap-3 min-[720px]:grid-cols-3">
+        @for (faq of templeFaqs; track faq.url) {
+          <li>
+            <a
+              [href]="faq.url"
+              target="_blank"
+              rel="noopener"
+              class="flex items-center justify-between h-full px-4 py-3 rounded-card bg-surface border border-border text-text no-underline hover:border-primary hover:text-primary"
+            >
+              {{ faq.label }}<span aria-hidden="true" class="opacity-60">↗</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="pt-4 pb-12">
   <div class="max-w-[1280px] mx-auto px-5">
     <div class="flex items-baseline justify-between mb-4">

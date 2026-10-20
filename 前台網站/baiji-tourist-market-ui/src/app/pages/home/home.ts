@@ -171,6 +171,15 @@ export class Home {
     }))
   );
 
+  protected readonly templeFaqs = [
+    { label: '綜合疑問', url: 'https://www.ht.org.tw/p6_faq126.htm' },
+    { label: '祈安法會', url: 'https://www.ht.org.tw/p6_faq111.htm' },
+    { label: '祭解', url: 'https://www.ht.org.tw/p6_faq112.htm' },
+    { label: '收驚', url: 'https://www.ht.org.tw/p6_faq116.htm' },
+    { label: '求籤 / 擲筊', url: 'https://www.ht.org.tw/p6_faq117.htm' },
+    { label: '平安袋 / 平安卡', url: 'https://www.ht.org.tw/p6_faq120.htm' },
+  ];
+
   protected readonly selectedNews = signal<NewsItem | null>(null);
   protected readonly selectedActivity = signal<ActivityItem | null>(null);
   private readonly newsDialog = viewChild<ElementRef<HTMLDialogElement>>('newsDialog');
