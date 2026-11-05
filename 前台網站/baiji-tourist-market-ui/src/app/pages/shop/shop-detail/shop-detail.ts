@@ -16,7 +16,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { ShopService, shopCategoryLabels } from '../../../shared/shop.service';
-import { setPageMeta } from '../../../shared/seo';
+import { SITE_URL, setPageJsonLd, setPageMeta } from '../../../shared/seo';
 
 const SOCIAL_ICONS: Record<string, string> = {
   facebook: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036l-.654-.012c-.955 0-1.552.223-1.905.635-.355.403-.515.906-.515 1.634v1.714h3.481c-.08.667-.222 1.534-.375 2.145l-.233.858-.195.664h-2.678v8.288"/></svg>`,
@@ -62,13 +62,33 @@ export class ShopDetail {
     effect(() => {
       const shop = this.shop();
       if (shop) {
-        runInInjectionContext(this.injector, () =>
+        runInInjectionContext(this.injector, () => {
+          const path = `shop/detail/${shop.number}`;
           setPageMeta(
             `${shop.name}｜三峽白雞觀光商場店家`,
             `${shop.brief}｜三峽白雞觀光商場`,
-            `shop/detail/${shop.number}`
-          )
-        );
+            path,
+            shop.images[0] || undefined
+          );
+          setPageJsonLd({
+            '@context': 'https://schema.org',
+            '@type': 'Store',
+            name: shop.name,
+            description: shop.doc,
+            url: `${SITE_URL}/${path}`,
+            image: shop.images.length ? shop.images : undefined,
+            telephone: shop.phone[0] || undefined,
+            sameAs: [shop.officialWebsite, shop.fb, shop.ig].filter(Boolean),
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: '白雞路155號',
+              addressLocality: '三峽區',
+              addressRegion: '新北市',
+              addressCountry: 'TW',
+            },
+            containedInPlace: { '@type': 'ShoppingCenter', name: '三峽白雞觀光商場', url: `${SITE_URL}/` },
+          });
+        });
       } else if (!this.shopService.isLoading()) {
         this.router.navigateByUrl('/shop');
       }
