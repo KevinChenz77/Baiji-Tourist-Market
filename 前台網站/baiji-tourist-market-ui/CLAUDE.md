@@ -18,7 +18,7 @@ npm run serve:ssr:baiji-tourist-market-ui          # run the built SSR server (n
 
 ### Node / toolchain
 
-Node is managed via **nvm**, not the system `/usr/local/bin/node`. Default aliased version is v26.10.0, required because `@angular/cli@22` needs Node `^22.22.3 || ^24.15.0 || >=26.0.0`. If a shell reports an old Angular CLI/Node version, run:
+Node is managed via **nvm**, not the system `/usr/local/bin/node`. Default aliased version is v26.13.0 (keep ≥ the latest security release; `engines.node` also pins Railway to 26.x), required because `@angular/cli@22` needs Node `^22.22.3 || ^24.15.0 || >=26.0.0`. If a shell reports an old Angular CLI/Node version, run:
 ```bash
 export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 ```
